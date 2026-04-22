@@ -1,0 +1,21 @@
+This project MUST follow strict MVVM architecture with Riverpod.
+- OOP (Object-Oriented Programming)
+- KISS (Keep It Simple, Stupid)
+- MVVM
+
+Always put:
+- data classes → models/
+- data access → repositories/
+- state & logic → providers/ (use Notifier / AsyncNotifier)
+- UI → screens/ + widgets/
+
+Feature-first structure: features/<feature>/providers | screens | widgets | models | repositories
+
+Use ConsumerWidget / HookConsumerWidget for screens.
+Never use setState or ChangeNotifier in new code.
+Prefer riverpod_generator when possible.
+Follow clean naming: business_card_detail_notifier.dart, not bloc/cubit.
+
+When in doubt → read docs/architecture.md and docs/ai-instructions.md
+
+See docs/ai-instructions.md for important rules (localization, etc).

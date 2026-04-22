@@ -1,0 +1,83 @@
+name: contact_quick_share
+description: >
+  Lightweight, offline-first mobile app that lets users instantly generate and
+  share contact information via beautiful, customizable QR codes.
+  One- or two-tap fast — ideal for networking events, business cards, and
+  everyday use. No accounts, no cloud, no internet required.
+publish_to: 'none'
+version: 1.0.1+4
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  characters: ^1.4.0
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.5.0
+
+  # Data & storage
+  diacritic: ^0.1.6
+  flutter_contacts: ^2.0.1
+  shared_preferences: ^2.3.3
+  alphabet_list_view: ^1.2.1
+  sqflite: ^2.4.2
+  path: ^1.9.0
+  path_provider: ^2.1.0
+  uuid: ^4.5.0
+
+  # QR & sharing
+  vcard_dart: ^2.1.0
+  pretty_qr_code: ^3.6.0
+  qr: ^3.0.0
+  flex_color_picker: ^3.8.0
+  share_plus: ^12.0.0
+  file_picker: ^10.0.0
+  image_picker: ^1.0.7
+  image: ^4.8.0
+  url_launcher: ^6.3.1
+
+  # Navigation
+  go_router: ^14.0.0
+
+  # Theming
+  dynamic_color: ^1.8.1
+
+  # Markdown rendering
+  flutter_markdown_plus: ^1.0.7
+
+  # UI effects
+  confetti: ^0.8.0
+  package_info_plus: ^9.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  sqflite_common_ffi: ^2.3.0
+
+  # Riverpod code generation
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - LICENSE.md
+
+  # fonts:
+  #   - family: Example
+  #     fonts:
+  #       - asset: assets/fonts/Example-Regular.ttf
+  #       - asset: assets/fonts/Example-Bold.ttf
+  #         weight: 700
