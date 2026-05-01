@@ -15,7 +15,10 @@ bool _includeItem(List<bool> items, int index, bool categoryFallback) {
 
 /// Builds vCard 3.0 string from [fc.Contact] with only selected fields.
 /// Never includes photo (keeps QR within capacity).
-String buildVCardFromContact(fc.Contact contact, [ContactFieldSelection? selection]) {
+String buildVCardFromContact(
+  fc.Contact contact, [
+  ContactFieldSelection? selection,
+]) {
   final sel = selection ?? _fullSelectionForContact(contact);
   final vcard = VCard(version: VCardVersion.v30);
 
@@ -30,7 +33,9 @@ String buildVCardFromContact(fc.Contact contact, [ContactFieldSelection? selecti
     if (n != null) {
       final family = (n.last ?? '').trim();
       final given = (n.first ?? '').trim();
-      final hasStructured = family.isNotEmpty || given.isNotEmpty ||
+      final hasStructured =
+          family.isNotEmpty ||
+          given.isNotEmpty ||
           (n.prefix ?? '').trim().isNotEmpty ||
           (n.middle ?? '').trim().isNotEmpty ||
           (n.suffix ?? '').trim().isNotEmpty;
@@ -40,10 +45,18 @@ String buildVCardFromContact(fc.Contact contact, [ContactFieldSelection? selecti
           given: given,
           prefixes: (n.prefix ?? '').trim().isNotEmpty ? [n.prefix!] : const [],
           suffixes: (n.suffix ?? '').trim().isNotEmpty ? [n.suffix!] : const [],
-          additional: (n.middle ?? '').trim().isNotEmpty ? [n.middle!] : const [],
+          additional: (n.middle ?? '').trim().isNotEmpty
+              ? [n.middle!]
+              : const [],
         );
       } else if ((contact.displayName ?? '').trim().isNotEmpty) {
         vcard.name = StructuredName.raw(contact.displayName!);
+      }
+      if (sel.nickname) {
+        final nick = contact.name?.nickname?.trim();
+        if (nick != null && nick.isNotEmpty) {
+          vcard.nicknames.add(nick);
+        }
       }
     }
   }
@@ -93,15 +106,13 @@ String buildVCardFromContact(fc.Contact contact, [ContactFieldSelection? selecti
       }
       primaryOrgSet = true;
     } else {
-      vcard.extendedProperties.add(VCardProperty(
-        name: PropertyName.org,
-        value: org.toValue(),
-      ));
+      vcard.extendedProperties.add(
+        VCardProperty(name: PropertyName.org, value: org.toValue()),
+      );
       if (title.isNotEmpty) {
-        vcard.extendedProperties.add(VCardProperty(
-          name: PropertyName.title,
-          value: title,
-        ));
+        vcard.extendedProperties.add(
+          VCardProperty(name: PropertyName.title, value: title),
+        );
       }
     }
   }
@@ -133,20 +144,19 @@ String buildVCardFromContact(fc.Contact contact, [ContactFieldSelection? selecti
     final s = contact.socialMedias[i];
     final (url, type) = SocialPlatformResolver.socialMediaToUrlAndType(s);
     if (url != null) {
-      vcard.urls.add(WebUrl(
-        url: url,
-        types: type != null ? [type] : [],
-      ));
+      vcard.urls.add(WebUrl(url: url, types: type != null ? [type] : []));
     } else {
       final typeAndValue =
           SocialPlatformResolver.socialMediaToCustomPropertyTypeAndValue(s);
       if (typeAndValue != null) {
         final (propType, value) = typeAndValue;
-        vcard.extendedProperties.add(VCardProperty.withType(
-          name: 'X-SOCIALPROFILE',
-          value: value,
-          type: propType,
-        ));
+        vcard.extendedProperties.add(
+          VCardProperty.withType(
+            name: 'X-SOCIALPROFILE',
+            value: value,
+            type: propType,
+          ),
+        );
       }
     }
   }
@@ -173,6 +183,7 @@ ContactFieldSelection _fullSelectionForContact(fc.Contact contact) {
     contact,
     const ContactFieldSelection(
       name: true,
+      nickname: true,
       phones: true,
       emails: true,
       organizations: true,
@@ -257,9 +268,5 @@ Address _addressToAddress(fc.Address a) {
       types = ['other'];
   }
 
-  return Address.raw(
-    formatted,
-    types: types,
-    label: labelParam,
-  );
+  return Address.raw(formatted, types: types, label: labelParam);
 }

@@ -13,8 +13,8 @@ const _key = 'debug_disable_os_theme';
 /// In release builds, this provider always resolves to false.
 final debugDisableOsThemeProvider =
     AsyncNotifierProvider<DebugDisableOsThemeNotifier, bool>(
-  DebugDisableOsThemeNotifier.new,
-);
+      DebugDisableOsThemeNotifier.new,
+    );
 
 class DebugDisableOsThemeNotifier extends AsyncNotifier<bool> {
   @override

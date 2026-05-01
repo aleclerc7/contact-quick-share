@@ -13,21 +13,17 @@ class BusinessCardRepository {
 
   /// For unit tests: inject a [Database] directly, bypassing [DatabaseManager].
   BusinessCardRepository.forTesting(Database db)
-      : _dbManager = null,
-        _dbOverride = Future.value(db);
+    : _dbManager = null,
+      _dbOverride = Future.value(db);
 
   final DatabaseManager? _dbManager;
   final Future<Database>? _dbOverride;
 
-  Future<Database> get _db async =>
-      _dbOverride ?? _dbManager!.openDb();
+  Future<Database> get _db async => _dbOverride ?? _dbManager!.openDb();
 
   Future<List<BusinessCard>> getAll() async {
     final db = await _db;
-    final rows = await db.query(
-      'business_cards',
-      orderBy: 'updated_at DESC',
-    );
+    final rows = await db.query('business_cards', orderBy: 'updated_at DESC');
     return rows.map(_rowToBusinessCard).toList();
   }
 
@@ -59,11 +55,7 @@ class BusinessCardRepository {
 
   Future<void> delete(String id) async {
     final db = await _db;
-    await db.delete(
-      'business_cards',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    await db.delete('business_cards', where: 'id = ?', whereArgs: [id]);
   }
 
   BusinessCard _rowToBusinessCard(Map<String, dynamic> row) {

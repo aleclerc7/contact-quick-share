@@ -58,21 +58,28 @@ AsyncValue<ContactsListState> contactsListState(Ref ref) {
     error: (err, stack) => AsyncError<ContactsListState>(err, stack),
     data: (contacts) {
       if (searchQuery.isEmpty) {
-        final sections =
-            repo.partitionByLetter(contacts, CollationSort.getGroupKey);
+        final sections = repo.partitionByLetter(
+          contacts,
+          CollationSort.getGroupKey,
+        );
         return AsyncData(
           ContactsListState(sections: sections, permissionDenied: false),
         );
       }
-      final filtered =
-          repo.filterByQuery(contacts, searchQuery, includeNotes: true);
+      final filtered = repo.filterByQuery(
+        contacts,
+        searchQuery,
+        includeNotes: true,
+      );
       final searchHits = repo.getSearchHitsForContacts(
         filtered,
         searchQuery,
         includeNotes: true,
       );
-      final sections =
-          repo.partitionByLetter(filtered, CollationSort.getGroupKey);
+      final sections = repo.partitionByLetter(
+        filtered,
+        CollationSort.getGroupKey,
+      );
       return AsyncData(
         ContactsListState(
           sections: sections,

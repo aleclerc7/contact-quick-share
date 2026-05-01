@@ -37,202 +37,201 @@ class SettingsScreen extends ConsumerWidget {
     final asyncCards = ref.watch(businessCardsListNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.settingsTitle),
-      ),
+      appBar: AppBar(title: Text(loc.settingsTitle)),
       body: SafeArea(
         top: false,
         child: asyncSettings.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text(loc.errorGeneric(e.toString()))),
-        data: (settings) {
-          return ListView(
-            children: [
-              SettingsSection(
-                title: loc.sharing,
-                children: [
-                  ListTile(
-                    title: Text(loc.defaultShareFields),
-                    subtitle: Text(loc.defaultShareFieldsSubtitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const DefaultShareFieldsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              SettingsSection(
-                title: loc.appearance,
-                children: [
-                  ListTile(
-                    title: Text(loc.defaultQrCodeStyle),
-                    subtitle: Text(loc.defaultQrCodeStyleSubtitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const DefaultAppearanceScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              SettingsSection(
-                title: loc.application,
-                children: [
-                  ListTile(
-                    title: Text(loc.language),
-                    subtitle: Text(_localeLabel(context, settings.locale)),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      _showLanguagePicker(context, ref, settings);
-                    },
-                  ),
-                  ListTile(
-                    title: Text(loc.theme),
-                    subtitle: Text(_themeModeLabel(context, settings.themeMode)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SegmentedButton<ThemeMode>(
-                      segments: [
-                        ButtonSegment(
-                          value: ThemeMode.system,
-                          label: Text(loc.themeAuto),
-                          icon: const Icon(Icons.brightness_auto),
-                        ),
-                        ButtonSegment(
-                          value: ThemeMode.light,
-                          label: Text(loc.themeLight),
-                          icon: const Icon(Icons.light_mode),
-                        ),
-                        ButtonSegment(
-                          value: ThemeMode.dark,
-                          label: Text(loc.themeDark),
-                          icon: const Icon(Icons.dark_mode),
-                        ),
-                      ],
-                      selected: {settings.themeMode},
-                      onSelectionChanged: (selected) {
-                        final mode = selected.first;
-                        ref
-                            .read(settingsNotifierProvider.notifier)
-                            .updateSettings(settings.copyWith(themeMode: mode));
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(loc.colorTheme),
-                    subtitle: Text(
-                      _colorThemeSubtitle(context, settings),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ..._colorThemeSwatches(context, settings),
-                        const Icon(Icons.chevron_right),
-                      ],
-                    ),
-                    onTap: () => _showColorThemePicker(
-                      context,
-                      ref,
-                      settings,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ListTile(
-                    title: Text(loc.autoOpenCardOnLaunch),
-                    subtitle: asyncCards.when(
-                      data: (cards) {
-                        final cardId = settings.autoOpenCardId;
-                        if (cardId == null) {
-                          return Text(loc.none);
-                        }
-                        final card =
-                            cards.where((c) => c.id == cardId).firstOrNull;
-                        return Text(
-                          card != null
-                              ? (card.displayFullName.isNotEmpty
-                                  ? card.displayFullName
-                                  : card.cardName)
-                              : loc.cardNotFound,
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text(loc.errorGeneric(e.toString()))),
+          data: (settings) {
+            return ListView(
+              children: [
+                SettingsSection(
+                  title: loc.sharing,
+                  children: [
+                    ListTile(
+                      title: Text(loc.defaultShareFields),
+                      subtitle: Text(loc.defaultShareFieldsSubtitle),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const DefaultShareFieldsScreen(),
+                          ),
                         );
                       },
-                      loading: () => Text(loc.loading),
-                      error: (err, stack) => Text(loc.errorLoadingCards),
                     ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => _showAutoOpenPicker(context, ref, settings),
-                  ),
-                ],
-              ),
-              SettingsSection(
-                title: loc.backup,
-                children: [
-                  ListTile(
-                    title: Text(loc.export),
-                    subtitle: Text(loc.exportSubtitle),
-                    trailing: const Icon(Icons.upload_file),
-                    onTap: () => _showExportDialog(context, ref),
-                  ),
-                  ListTile(
-                    title: Text(loc.import),
-                    subtitle: Text(loc.importSubtitle),
-                    trailing: const Icon(Icons.download),
-                    onTap: () => _importBackup(context, ref),
-                  ),
-                ],
-              ),
-              SettingsSection(
-                title: loc.about,
-                children: [
-                  ListTile(
-                    title: Text(loc.shareAppLink),
-                    subtitle: Text(loc.shareAppLinkSubtitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => SimpleQrScreen(
-                            payload: SimpleQrPayload(
-                              data: AppConstants.appDownloadPageUrl,
-                              qrAppearance: settings.defaultQrAppearance,
-                              backgroundColor: settings.defaultBackgroundColor,
-                              textColor: settings.defaultTextColor,
+                  ],
+                ),
+                SettingsSection(
+                  title: loc.appearance,
+                  children: [
+                    ListTile(
+                      title: Text(loc.defaultQrCodeStyle),
+                      subtitle: Text(loc.defaultQrCodeStyleSubtitle),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const DefaultAppearanceScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: loc.application,
+                  children: [
+                    ListTile(
+                      title: Text(loc.language),
+                      subtitle: Text(_localeLabel(context, settings.locale)),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        _showLanguagePicker(context, ref, settings);
+                      },
+                    ),
+                    ListTile(
+                      title: Text(loc.theme),
+                      subtitle: Text(
+                        _themeModeLabel(context, settings.themeMode),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: SegmentedButton<ThemeMode>(
+                        segments: [
+                          ButtonSegment(
+                            value: ThemeMode.system,
+                            label: Text(loc.themeAuto),
+                            icon: const Icon(Icons.brightness_auto),
+                          ),
+                          ButtonSegment(
+                            value: ThemeMode.light,
+                            label: Text(loc.themeLight),
+                            icon: const Icon(Icons.light_mode),
+                          ),
+                          ButtonSegment(
+                            value: ThemeMode.dark,
+                            label: Text(loc.themeDark),
+                            icon: const Icon(Icons.dark_mode),
+                          ),
+                        ],
+                        selected: {settings.themeMode},
+                        onSelectionChanged: (selected) {
+                          final mode = selected.first;
+                          ref
+                              .read(settingsNotifierProvider.notifier)
+                              .updateSettings(
+                                settings.copyWith(themeMode: mode),
+                              );
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(loc.colorTheme),
+                      subtitle: Text(_colorThemeSubtitle(context, settings)),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ..._colorThemeSwatches(context, settings),
+                          const Icon(Icons.chevron_right),
+                        ],
+                      ),
+                      onTap: () =>
+                          _showColorThemePicker(context, ref, settings),
+                    ),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      title: Text(loc.autoOpenCardOnLaunch),
+                      subtitle: asyncCards.when(
+                        data: (cards) {
+                          final cardId = settings.autoOpenCardId;
+                          if (cardId == null) {
+                            return Text(loc.none);
+                          }
+                          final card = cards
+                              .where((c) => c.id == cardId)
+                              .firstOrNull;
+                          return Text(
+                            card != null
+                                ? (card.displayFullName.isNotEmpty
+                                      ? card.displayFullName
+                                      : card.cardName)
+                                : loc.cardNotFound,
+                          );
+                        },
+                        loading: () => Text(loc.loading),
+                        error: (err, stack) => Text(loc.errorLoadingCards),
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _showAutoOpenPicker(context, ref, settings),
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: loc.backup,
+                  children: [
+                    ListTile(
+                      title: Text(loc.export),
+                      subtitle: Text(loc.exportSubtitle),
+                      trailing: const Icon(Icons.upload_file),
+                      onTap: () => _showExportDialog(context, ref),
+                    ),
+                    ListTile(
+                      title: Text(loc.import),
+                      subtitle: Text(loc.importSubtitle),
+                      trailing: const Icon(Icons.download),
+                      onTap: () => _importBackup(context, ref),
+                    ),
+                  ],
+                ),
+                SettingsSection(
+                  title: loc.about,
+                  children: [
+                    ListTile(
+                      title: Text(loc.shareAppLink),
+                      subtitle: Text(loc.shareAppLinkSubtitle),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => SimpleQrScreen(
+                              payload: SimpleQrPayload(
+                                data: AppConstants.appDownloadPageUrl,
+                                qrAppearance: settings.defaultQrAppearance,
+                                backgroundColor:
+                                    settings.defaultBackgroundColor,
+                                textColor: settings.defaultTextColor,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    title: Text(loc.privacyPolicy),
-                    trailing: const Icon(Icons.open_in_new),
-                    onTap: () => _openPrivacyPolicyUrl(context),
-                  ),
-                  ListTile(
-                    title: Text(loc.license),
-                    subtitle: Text(loc.licenseSubtitle),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const LicenseScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text(loc.privacyPolicy),
+                      trailing: const Icon(Icons.open_in_new),
+                      onTap: () => _openPrivacyPolicyUrl(context),
+                    ),
+                    ListTile(
+                      title: Text(loc.license),
+                      subtitle: Text(loc.licenseSubtitle),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const LicenseScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -243,15 +242,15 @@ class SettingsScreen extends ConsumerWidget {
     try {
       final didLaunch = await launchUrl(uri, mode: LaunchMode.platformDefault);
       if (!didLaunch && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     } catch (_) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     }
   }
@@ -269,10 +268,7 @@ class SettingsScreen extends ConsumerWidget {
     return useSeparate ? loc.colorThemeCustomLightDark : loc.colorThemeCustom;
   }
 
-  List<Widget> _colorThemeSwatches(
-    BuildContext context,
-    AppSettings settings,
-  ) {
+  List<Widget> _colorThemeSwatches(BuildContext context, AppSettings settings) {
     final swatches = <Widget>[];
     final seed = settings.themeSeedColor;
     final light = settings.themeSeedColorLight;
@@ -302,10 +298,7 @@ class SettingsScreen extends ConsumerWidget {
         color: color,
         shape: BoxShape.circle,
         border: Border.all(
-          color: Theme.of(context)
-              .colorScheme
-              .outline
-              .withValues(alpha: 0.5),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
         ),
       ),
     );
@@ -391,8 +384,7 @@ class SettingsScreen extends ConsumerWidget {
     final useSeparate =
         settings.themeSeedColorLight != null ||
         settings.themeSeedColorDark != null;
-    final hasCustom =
-        settings.themeSeedColor != null || useSeparate;
+    final hasCustom = settings.themeSeedColor != null || useSeparate;
 
     showModalBottomSheet<void>(
       context: context,
@@ -403,7 +395,8 @@ class SettingsScreen extends ConsumerWidget {
             final asyncSettings = ref.watch(settingsNotifierProvider);
             return asyncSettings.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text(loc.errorGeneric(e.toString()))),
+              error: (e, _) =>
+                  Center(child: Text(loc.errorGeneric(e.toString()))),
               data: (currentSettings) {
                 final useSameForBoth =
                     currentSettings.themeSeedColorLight == null &&
@@ -417,128 +410,141 @@ class SettingsScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                      ListTile(
-                        title: Text(loc.useDefault),
-                        subtitle: Text(loc.useDefaultSubtitle),
-                        leading: const Icon(Icons.palette_outlined),
-                        onTap: () {
-                          ref
-                              .read(settingsNotifierProvider.notifier)
-                              .updateSettings(
-                                currentSettings.copyWith(
-                                  themeSeedColor: null,
-                                  themeSeedColorLight: null,
-                                  themeSeedColorDark: null,
-                                ),
-                              );
-                          Navigator.of(sheetContext).pop();
-                        },
-                      ),
-                      const Divider(height: 1),
-                      if (hasCustom) ...[
-                        SwitchListTile(
-                          title: Text(loc.useSameForBoth),
-                          subtitle: Text(loc.useSameForBothSubtitle),
-                          value: useSameForBoth,
-                          onChanged: (value) async {
-                            if (value) {
-                              final seed = currentSettings.themeSeedColor ??
-                                  currentSettings.themeSeedColorLight ??
-                                  currentSettings.themeSeedColorDark;
-                              await ref
-                                  .read(settingsNotifierProvider.notifier)
-                                  .updateSettings(
-                                    currentSettings.copyWith(
-                                      themeSeedColor: seed,
-                                      themeSeedColorLight: null,
-                                      themeSeedColorDark: null,
-                                    ),
-                                  );
-                            } else {
-                              final seed = currentSettings.themeSeedColor ??
-                                  currentSettings.themeSeedColorLight ??
-                                  currentSettings.themeSeedColorDark ??
-                                  Colors.blue.toARGB32();
-                              await ref
+                          ListTile(
+                            title: Text(loc.useDefault),
+                            subtitle: Text(loc.useDefaultSubtitle),
+                            leading: const Icon(Icons.palette_outlined),
+                            onTap: () {
+                              ref
                                   .read(settingsNotifierProvider.notifier)
                                   .updateSettings(
                                     currentSettings.copyWith(
                                       themeSeedColor: null,
-                                      themeSeedColorLight: seed,
-                                      themeSeedColorDark: seed,
+                                      themeSeedColorLight: null,
+                                      themeSeedColorDark: null,
                                     ),
                                   );
-                            }
-                          },
-                        ),
-                        const Divider(height: 1),
-                      ],
-                      if (useSameForBoth)
-                        ListTile(
-                          title: Text(loc.chooseColor),
-                          subtitle: Text(loc.chooseColorSubtitle),
-                          leading: const Icon(Icons.color_lens),
-                          onTap: () => _openColorPicker(
-                            sheetContext,
-                            ref,
-                            currentSettings,
-                            forLight: null,
-                            forDark: null,
+                              Navigator.of(sheetContext).pop();
+                            },
                           ),
-                        )
-                      else ...[
-                        ListTile(
-                          title: Text(loc.lightModeColor),
-                          leading: currentSettings.themeSeedColorLight != null
-                              ? _colorSwatch(
-                                  sheetContext,
-                                  Color(currentSettings.themeSeedColorLight!),
-                                )
-                              : const Icon(Icons.light_mode),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () => _openColorPicker(
-                            sheetContext,
-                            ref,
-                            currentSettings,
-                            forLight: true,
-                            forDark: null,
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(loc.darkModeColor),
-                          leading: currentSettings.themeSeedColorDark != null
-                              ? _colorSwatch(
-                                  sheetContext,
-                                  Color(currentSettings.themeSeedColorDark!),
-                                )
-                              : const Icon(Icons.dark_mode),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () => _openColorPicker(
-                            sheetContext,
-                            ref,
-                            currentSettings,
-                            forLight: null,
-                            forDark: true,
-                          ),
-                        ),
-                      ],
-                      if (kDebugMode) ...[
-                        const Divider(height: 1),
-                        SwitchListTile(
-                          title: Text('Use default theme (debug)'), // Do not translate, only used in debug mode.
-                          subtitle: Text('Preview embedded theme instead of OS colors (debug mode only)'), // Do not translate, only used in debug mode.
-                          value: ref
-                                  .watch(debugDisableOsThemeProvider)
-                                  .valueOrNull ??
-                              false,
-                          onChanged: (value) {
-                            ref
-                                .read(debugDisableOsThemeProvider.notifier)
-                                .toggle();
-                          },
-                        ),
-                      ],
-                    ],
+                          const Divider(height: 1),
+                          if (hasCustom) ...[
+                            SwitchListTile(
+                              title: Text(loc.useSameForBoth),
+                              subtitle: Text(loc.useSameForBothSubtitle),
+                              value: useSameForBoth,
+                              onChanged: (value) async {
+                                if (value) {
+                                  final seed =
+                                      currentSettings.themeSeedColor ??
+                                      currentSettings.themeSeedColorLight ??
+                                      currentSettings.themeSeedColorDark;
+                                  await ref
+                                      .read(settingsNotifierProvider.notifier)
+                                      .updateSettings(
+                                        currentSettings.copyWith(
+                                          themeSeedColor: seed,
+                                          themeSeedColorLight: null,
+                                          themeSeedColorDark: null,
+                                        ),
+                                      );
+                                } else {
+                                  final seed =
+                                      currentSettings.themeSeedColor ??
+                                      currentSettings.themeSeedColorLight ??
+                                      currentSettings.themeSeedColorDark ??
+                                      Colors.blue.toARGB32();
+                                  await ref
+                                      .read(settingsNotifierProvider.notifier)
+                                      .updateSettings(
+                                        currentSettings.copyWith(
+                                          themeSeedColor: null,
+                                          themeSeedColorLight: seed,
+                                          themeSeedColorDark: seed,
+                                        ),
+                                      );
+                                }
+                              },
+                            ),
+                            const Divider(height: 1),
+                          ],
+                          if (useSameForBoth)
+                            ListTile(
+                              title: Text(loc.chooseColor),
+                              subtitle: Text(loc.chooseColorSubtitle),
+                              leading: const Icon(Icons.color_lens),
+                              onTap: () => _openColorPicker(
+                                sheetContext,
+                                ref,
+                                currentSettings,
+                                forLight: null,
+                                forDark: null,
+                              ),
+                            )
+                          else ...[
+                            ListTile(
+                              title: Text(loc.lightModeColor),
+                              leading:
+                                  currentSettings.themeSeedColorLight != null
+                                  ? _colorSwatch(
+                                      sheetContext,
+                                      Color(
+                                        currentSettings.themeSeedColorLight!,
+                                      ),
+                                    )
+                                  : const Icon(Icons.light_mode),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () => _openColorPicker(
+                                sheetContext,
+                                ref,
+                                currentSettings,
+                                forLight: true,
+                                forDark: null,
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(loc.darkModeColor),
+                              leading:
+                                  currentSettings.themeSeedColorDark != null
+                                  ? _colorSwatch(
+                                      sheetContext,
+                                      Color(
+                                        currentSettings.themeSeedColorDark!,
+                                      ),
+                                    )
+                                  : const Icon(Icons.dark_mode),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () => _openColorPicker(
+                                sheetContext,
+                                ref,
+                                currentSettings,
+                                forLight: null,
+                                forDark: true,
+                              ),
+                            ),
+                          ],
+                          if (kDebugMode) ...[
+                            const Divider(height: 1),
+                            SwitchListTile(
+                              title: Text(
+                                'Use default theme (debug)',
+                              ), // Do not translate, only used in debug mode.
+                              subtitle: Text(
+                                'Preview embedded theme instead of OS colors (debug mode only)',
+                              ), // Do not translate, only used in debug mode.
+                              value:
+                                  ref
+                                      .watch(debugDisableOsThemeProvider)
+                                      .valueOrNull ??
+                                  false,
+                              onChanged: (value) {
+                                ref
+                                    .read(debugDisableOsThemeProvider.notifier)
+                                    .toggle();
+                              },
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                   ),
@@ -576,15 +582,21 @@ class SettingsScreen extends ConsumerWidget {
 
     if (picked != null) {
       if (forLight == true) {
-        await ref.read(settingsNotifierProvider.notifier).updateSettings(
+        await ref
+            .read(settingsNotifierProvider.notifier)
+            .updateSettings(
               settings.copyWith(themeSeedColorLight: picked.toARGB32()),
             );
       } else if (forDark == true) {
-        await ref.read(settingsNotifierProvider.notifier).updateSettings(
+        await ref
+            .read(settingsNotifierProvider.notifier)
+            .updateSettings(
               settings.copyWith(themeSeedColorDark: picked.toARGB32()),
             );
       } else {
-        await ref.read(settingsNotifierProvider.notifier).updateSettings(
+        await ref
+            .read(settingsNotifierProvider.notifier)
+            .updateSettings(
               settings.copyWith(themeSeedColor: picked.toARGB32()),
             );
       }
@@ -637,9 +649,9 @@ class SettingsScreen extends ConsumerWidget {
                       SnackBar(content: Text(loc.exportReadyToShare)),
                     );
                   case BackupError(:final message):
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message)),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(message)));
                 }
               },
               child: Text(loc.export),
@@ -664,13 +676,15 @@ class SettingsScreen extends ConsumerWidget {
 
     BackupData backup;
     try {
-      backup = await ref
-          .read(backupRepositoryProvider)
-          .importFromFile(path);
+      backup = await ref.read(backupRepositoryProvider).importFromFile(path);
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.invalidBackupFile(e.toString()))),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.invalidBackupFile(e.toString()),
+          ),
+        ),
       );
       return;
     }
@@ -722,10 +736,9 @@ class SettingsScreen extends ConsumerWidget {
               child: Text(loc.cancel),
             ),
             FilledButton(
-              onPressed: () => Navigator.of(dialogContext).pop((
-                importSettings: importSettings,
-                importCards: importCards,
-              )),
+              onPressed: () => Navigator.of(
+                dialogContext,
+              ).pop((importSettings: importSettings, importCards: importCards)),
               child: Text(loc.import),
             ),
           ],
@@ -735,7 +748,9 @@ class SettingsScreen extends ConsumerWidget {
 
     if (result == null || !context.mounted) return;
 
-    final importResult = await ref.read(backupNotifierProvider).applyImport(
+    final importResult = await ref
+        .read(backupNotifierProvider)
+        .applyImport(
           backup: backup,
           importSettings: result.importSettings,
           importCards: result.importCards,
@@ -745,12 +760,14 @@ class SettingsScreen extends ConsumerWidget {
     switch (importResult) {
       case BackupSuccess():
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.importCompleted)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.importCompleted),
+          ),
         );
       case BackupError(:final message):
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
     }
   }
 

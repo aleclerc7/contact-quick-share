@@ -162,6 +162,90 @@ abstract class AppLocalizations {
   /// **'New Business Card'**
   String get newBusinessCardTooltip;
 
+  /// No description provided for @addBusinessCardSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New business card'**
+  String get addBusinessCardSheetTitle;
+
+  /// No description provided for @addBusinessCardStartBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Start blank'**
+  String get addBusinessCardStartBlank;
+
+  /// No description provided for @addBusinessCardFromContact.
+  ///
+  /// In en, this message translates to:
+  /// **'From a contact'**
+  String get addBusinessCardFromContact;
+
+  /// No description provided for @addBusinessCardFromExistingCard.
+  ///
+  /// In en, this message translates to:
+  /// **'From another business card'**
+  String get addBusinessCardFromExistingCard;
+
+  /// No description provided for @businessCardPickerForCopyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a business card'**
+  String get businessCardPickerForCopyTitle;
+
+  /// No description provided for @copyBusinessCardFromThisAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy this business card'**
+  String get copyBusinessCardFromThisAction;
+
+  /// No description provided for @businessCardNameCopySuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' (copy)'**
+  String get businessCardNameCopySuffix;
+
+  /// No description provided for @noMatchingBusinessCards.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching business cards'**
+  String get noMatchingBusinessCards;
+
+  /// No description provided for @contactPickerForNewCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a contact'**
+  String get contactPickerForNewCardTitle;
+
+  /// No description provided for @createCardFromContactAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Create business card from contact'**
+  String get createCardFromContactAction;
+
+  /// No description provided for @importFromContactsNeedPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts access needed'**
+  String get importFromContactsNeedPermissionTitle;
+
+  /// No description provided for @importFromContactsNeedPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'To create a business card from a contact, allow access to your contacts.'**
+  String get importFromContactsNeedPermissionBody;
+
+  /// No description provided for @importFromContactsTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get importFromContactsTryAgain;
+
+  /// No description provided for @noContactsOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts on this device'**
+  String get noContactsOnDevice;
+
   /// No description provided for @searchHint.
   ///
   /// In en, this message translates to:

@@ -12,11 +12,7 @@ import 'package:contact_quick_share/app.dart';
 
 void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: ContactQuickShareApp(),
-      ),
-    );
+    await tester.pumpWidget(const ProviderScope(child: ContactQuickShareApp()));
     // One frame is enough: avoid pumpAndSettle (async init / progress indicators never finish).
     await tester.pump();
 

@@ -30,8 +30,9 @@ class DeviceContactRepository {
   /// Requests read-only contacts permission.
   /// Returns true if granted or limited.
   Future<bool> requestPermission() async {
-    final status =
-        await FlutterContacts.permissions.request(PermissionType.read);
+    final status = await FlutterContacts.permissions.request(
+      PermissionType.read,
+    );
     return status == PermissionStatus.granted ||
         status == PermissionStatus.limited;
   }
@@ -39,9 +40,7 @@ class DeviceContactRepository {
   /// Fetches all device contacts with [neededProperties].
   /// Used for both display and search. Returns contacts sorted by displayName ascending.
   Future<List<Contact>> getAll() async {
-    final contacts = await FlutterContacts.getAll(
-      properties: neededProperties,
-    );
+    final contacts = await FlutterContacts.getAll(properties: neededProperties);
     return _sortByDisplayName(contacts);
   }
 
@@ -85,7 +84,11 @@ class DeviceContactRepository {
     for (final c in contacts) {
       final id = c.id;
       if (id == null) continue;
-      final hit = findFirstHitInContact(c, query.trim(), includeNotes: includeNotesEffective);
+      final hit = findFirstHitInContact(
+        c,
+        query.trim(),
+        includeNotes: includeNotesEffective,
+      );
       result[id] = hit;
     }
     return result;
@@ -128,8 +131,6 @@ class DeviceContactRepository {
         if (b == '#') return -1;
         return CollationSort.compareStrings(a, b);
       });
-    return Map.fromEntries(
-      keys.map((k) => MapEntry(k, map[k]!)),
-    );
+    return Map.fromEntries(keys.map((k) => MapEntry(k, map[k]!)));
   }
 }

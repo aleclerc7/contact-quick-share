@@ -41,6 +41,49 @@ class AppLocalizationsNl extends AppLocalizations {
   String get newBusinessCardTooltip => 'Nieuw visitekaartje';
 
   @override
+  String get addBusinessCardSheetTitle => 'Nieuw visitekaartje';
+
+  @override
+  String get addBusinessCardStartBlank => 'Leeg beginnen';
+
+  @override
+  String get addBusinessCardFromContact => 'Vanaf een contact';
+
+  @override
+  String get addBusinessCardFromExistingCard => 'Vanaf een ander visitekaartje';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Kies een visitekaartje';
+
+  @override
+  String get copyBusinessCardFromThisAction => 'Dit visitekaartje kopiëren';
+
+  @override
+  String get businessCardNameCopySuffix => ' (kopie)';
+
+  @override
+  String get noMatchingBusinessCards => 'Geen overeenkomstige visitekaartjes';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Kies een contact';
+
+  @override
+  String get createCardFromContactAction => 'Visitekaartje maken van contact';
+
+  @override
+  String get importFromContactsNeedPermissionTitle => 'Contacttoegang nodig';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'Geef toegang tot contacten om een visitekaartje van een contact te maken.';
+
+  @override
+  String get importFromContactsTryAgain => 'Opnieuw proberen';
+
+  @override
+  String get noContactsOnDevice => 'Geen contacten op dit apparaat';
+
+  @override
   String get searchHint => 'Zoek kaarten of contacten…';
 
   @override

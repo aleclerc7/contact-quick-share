@@ -17,4 +17,5 @@ export 'widgets/qr_action_menu.dart';
 export 'widgets/qr_raw_data_dialog.dart';
 export 'widgets/appearance_editor_widget.dart';
 export 'widgets/qr_appearance_preview.dart';
-export 'package:pretty_qr_code/pretty_qr_code.dart' show PrettyQrDecorationImagePosition;
+export 'package:pretty_qr_code/pretty_qr_code.dart'
+    show PrettyQrDecorationImagePosition;

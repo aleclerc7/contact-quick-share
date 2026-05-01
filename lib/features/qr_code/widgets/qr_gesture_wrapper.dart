@@ -18,6 +18,7 @@ class QrGestureWrapper extends StatefulWidget {
     super.key,
     required this.payload,
     required this.resolver,
+    required this.expansionScopeId,
     required this.onEnterEdit,
     required this.onClose,
     required this.onShareAsImage,
@@ -27,6 +28,9 @@ class QrGestureWrapper extends StatefulWidget {
 
   final QrDisplayPayload payload;
   final DefaultAppearanceResolver resolver;
+
+  /// Passed to [QrDisplayView]; must be unique per concurrent QR instance.
+  final String expansionScopeId;
   final VoidCallback onEnterEdit;
   final VoidCallback onClose;
   final VoidCallback onShareAsImage;
@@ -54,10 +58,8 @@ class _QrGestureWrapperState extends State<QrGestureWrapper> {
       context,
       onShareAsImage: widget.onShareAsImage,
       onShareAsVCard: widget.onShareAsVCard,
-      onViewQrDataAsText: () => QrRawDataDialog.show(
-        context,
-        widget.payload.vCardContent,
-      ),
+      onViewQrDataAsText: () =>
+          QrRawDataDialog.show(context, widget.payload.vCardContent),
       trailing: QrActionMenuTrailingItem(
         label: widget.editLabel,
         icon: Icons.edit,
@@ -75,6 +77,7 @@ class _QrGestureWrapperState extends State<QrGestureWrapper> {
       child: QrDisplayView(
         payload: widget.payload,
         resolver: widget.resolver,
+        expansionScopeId: widget.expansionScopeId,
       ),
     );
   }

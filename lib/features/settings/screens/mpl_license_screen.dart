@@ -16,9 +16,7 @@ class MplLicenseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.readMplLicense),
-      ),
+      appBar: AppBar(title: Text(loc.readMplLicense)),
       body: FutureBuilder<String>(
         future: rootBundle.loadString('LICENSE.md'),
         builder: (context, snapshot) {

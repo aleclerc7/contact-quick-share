@@ -24,7 +24,7 @@ class QrLayoutShell extends StatelessWidget {
   /// Builds the content section (right in landscape, bottom in portrait).
   /// [isLandscape] is provided for content that adapts layout (e.g. alignment).
   final Widget Function(BuildContext context, {required bool isLandscape})
-      contentBuilder;
+  contentBuilder;
 
   /// Padding around QR and content. Default 15.0.
   final double border;
@@ -37,12 +37,11 @@ class QrLayoutShell extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableWidth = constraints.maxWidth - 2 * border;
-        final totalLandscapeFlex =
-            _landscapeQrFlex + _landscapeContentFlex;
+        final totalLandscapeFlex = _landscapeQrFlex + _landscapeContentFlex;
         final qrSize = isLandscape
             ? (constraints.maxWidth * _landscapeQrFlex / totalLandscapeFlex -
-                    2 * border)
-                .clamp(0.0, constraints.maxHeight - 2 * border)
+                      2 * border)
+                  .clamp(0.0, constraints.maxHeight - 2 * border)
             : availableWidth.clamp(0.0, double.infinity);
 
         final qrWidget = qrBuilder(context, qrSize);
@@ -75,10 +74,7 @@ class QrLayoutShell extends StatelessWidget {
         return Column(
           children: [
             const Spacer(flex: 3),
-            Padding(
-              padding: EdgeInsets.all(border),
-              child: qrWidget,
-            ),
+            Padding(padding: EdgeInsets.all(border), child: qrWidget),
             const SizedBox(height: 24),
             Expanded(
               flex: 7,

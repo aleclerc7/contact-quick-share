@@ -25,10 +25,7 @@ import '../services/default_appearance_resolver.dart';
 /// menu pattern as contact/card QR (share image, view data, open link).
 /// Architecture ready for future types (vCard, WiFi).
 class SimpleQrScreen extends ConsumerWidget {
-  const SimpleQrScreen({
-    super.key,
-    required this.payload,
-  });
+  const SimpleQrScreen({super.key, required this.payload});
 
   final SimpleQrPayload payload;
 
@@ -36,22 +33,15 @@ class SimpleQrScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncSettings = ref.watch(settingsNotifierProvider);
     return asyncSettings.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (e, _) => Scaffold(
-        body: Center(child: Text('Error: $e')),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (e, _) => Scaffold(body: Center(child: Text('Error: $e'))),
       data: (settings) {
         final resolver = DefaultAppearanceResolver(
           settings: settings,
           colorScheme: Theme.of(context).colorScheme,
         );
-        return _SimpleQrContent(
-          ref: ref,
-          payload: payload,
-          resolver: resolver,
-        );
+        return _SimpleQrContent(ref: ref, payload: payload, resolver: resolver);
       },
     );
   }
@@ -100,9 +90,9 @@ class _SimpleQrContentState extends State<_SimpleQrContent> {
     final loc = AppLocalizations.of(context)!;
     await Clipboard.setData(ClipboardData(text: widget.payload.data));
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(loc.copiedToClipboard)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(loc.copiedToClipboard)));
     }
   }
 
@@ -141,24 +131,24 @@ class _SimpleQrContentState extends State<_SimpleQrContent> {
     final uri = Uri.tryParse(url.trim());
     if (uri == null || !uri.hasScheme) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
       return;
     }
     try {
       final didLaunch = await launchUrl(uri, mode: LaunchMode.platformDefault);
       if (!didLaunch && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     } catch (_) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     }
   }
@@ -181,11 +171,16 @@ class _SimpleQrContentState extends State<_SimpleQrContent> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        widget.resolver.resolveBackgroundColor(widget.payload.backgroundColor);
-    final textColor = widget.resolver.resolveTextColor(widget.payload.textColor);
-    final decoration =
-        QrDecorationFactory.forSimplePayload(widget.payload, widget.resolver);
+    final backgroundColor = widget.resolver.resolveBackgroundColor(
+      widget.payload.backgroundColor,
+    );
+    final textColor = widget.resolver.resolveTextColor(
+      widget.payload.textColor,
+    );
+    final decoration = QrDecorationFactory.forSimplePayload(
+      widget.payload,
+      widget.resolver,
+    );
     final dataType = detectQrDataType(widget.payload.data);
 
     return PopScope(
@@ -212,14 +207,15 @@ class _SimpleQrContentState extends State<_SimpleQrContent> {
                           decoration: decoration,
                           onTap: () => _openQrActionMenu(context),
                         ),
-                        contentBuilder: (context, {required bool isLandscape}) =>
-                            _buildContentSection(
-                          context,
-                          dataType: dataType,
-                          backgroundColor: backgroundColor,
-                          textColor: textColor,
-                          isPortrait: !isLandscape,
-                        ),
+                        contentBuilder:
+                            (context, {required bool isLandscape}) =>
+                                _buildContentSection(
+                                  context,
+                                  dataType: dataType,
+                                  backgroundColor: backgroundColor,
+                                  textColor: textColor,
+                                  isPortrait: !isLandscape,
+                                ),
                       ),
                     ),
                   ],
@@ -343,7 +339,7 @@ class _CelebrationBurstState extends State<_CelebrationBurst> {
             child: ConfettiWidget(
               confettiController: _controller,
               blastDirectionality: BlastDirectionality.explosive,
-              blastDirection: -1.5708,  // -pi / 2
+              blastDirection: -1.5708, // -pi / 2
               emissionFrequency: 0.00,
               numberOfParticles: 50,
               maxBlastForce: 50,

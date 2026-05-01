@@ -40,7 +40,9 @@ class ShareService {
     // Create new params with position, preserving only non-empty values
     return ShareParams(
       files: params.files,
-      fileNameOverrides: params.fileNameOverrides?.isNotEmpty == true ? params.fileNameOverrides : null,
+      fileNameOverrides: params.fileNameOverrides?.isNotEmpty == true
+          ? params.fileNameOverrides
+          : null,
       text: params.text?.isNotEmpty == true ? params.text : null,
       subject: params.subject?.isNotEmpty == true ? params.subject : null,
       sharePositionOrigin: sharePosition,

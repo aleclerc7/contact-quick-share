@@ -58,6 +58,13 @@ class _ContactFieldSelectionWidgetState
     });
   }
 
+  void _setNickname(bool value) {
+    setState(() {
+      _selection = _selection.copyWith(nickname: value);
+      widget.onSelectionChanged(_selection);
+    });
+  }
+
   void _setPhone(int index, bool value) {
     final next = List<bool>.from(_selection.phoneItems);
     if (index < 0 || index >= next.length) return;
@@ -129,9 +136,10 @@ class _ContactFieldSelectionWidgetState
   }
 
   String _organizationSubtitle(Organization o) {
-    return [o.name ?? '', o.jobTitle ?? '']
-        .where((s) => s.trim().isNotEmpty)
-        .join(' • ');
+    return [
+      o.name ?? '',
+      o.jobTitle ?? '',
+    ].where((s) => s.trim().isNotEmpty).join(' • ');
   }
 
   String _addressSubtitle(Address a) {
@@ -212,16 +220,31 @@ class _ContactFieldSelectionWidgetState
           onChanged: _setName,
         ),
       );
+      final nick = (contact.name!.nickname ?? '').trim();
+      if (nick.isNotEmpty) {
+        children.add(
+          SwitchListTile(
+            title: Text(loc.nickname),
+            subtitle: Text(nick),
+            value: _selection.nickname,
+            onChanged: _selection.name ? _setNickname : null,
+          ),
+        );
+      }
     }
 
     if (contact.phones.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldPhones),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldPhones),
+        ),
+      );
       for (var i = 0; i < contact.phones.length; i++) {
         final p = contact.phones[i];
-        final on = i < _selection.phoneItems.length ? _selection.phoneItems[i] : false;
+        final on = i < _selection.phoneItems.length
+            ? _selection.phoneItems[i]
+            : false;
         final phoneSub = _phoneLabelSubtitle(p, loc);
         children.add(
           SwitchListTile(
@@ -235,13 +258,17 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.emails.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldEmails),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldEmails),
+        ),
+      );
       for (var i = 0; i < contact.emails.length; i++) {
         final e = contact.emails[i];
-        final on = i < _selection.emailItems.length ? _selection.emailItems[i] : false;
+        final on = i < _selection.emailItems.length
+            ? _selection.emailItems[i]
+            : false;
         final emailSub = _emailLabelSubtitle(e, loc);
         children.add(
           SwitchListTile(
@@ -255,10 +282,12 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.organizations.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldOrganization),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldOrganization),
+        ),
+      );
       for (var i = 0; i < contact.organizations.length; i++) {
         final o = contact.organizations[i];
         final on = i < _selection.organizationItems.length
@@ -266,7 +295,9 @@ class _ContactFieldSelectionWidgetState
             : false;
         children.add(
           SwitchListTile(
-            title: Text(_organizationSubtitle(o).isEmpty ? '—' : _organizationSubtitle(o)),
+            title: Text(
+              _organizationSubtitle(o).isEmpty ? '—' : _organizationSubtitle(o),
+            ),
             value: on,
             onChanged: (v) => _setOrganization(i, v),
           ),
@@ -275,14 +306,17 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.addresses.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldAddresses),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldAddresses),
+        ),
+      );
       for (var i = 0; i < contact.addresses.length; i++) {
         final a = contact.addresses[i];
-        final on =
-            i < _selection.addressItems.length ? _selection.addressItems[i] : false;
+        final on = i < _selection.addressItems.length
+            ? _selection.addressItems[i]
+            : false;
         final sub = _addressSubtitle(a);
         children.add(
           SwitchListTile(
@@ -295,14 +329,17 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.websites.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldWebsites),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldWebsites),
+        ),
+      );
       for (var i = 0; i < contact.websites.length; i++) {
         final w = contact.websites[i];
-        final on =
-            i < _selection.websiteItems.length ? _selection.websiteItems[i] : false;
+        final on = i < _selection.websiteItems.length
+            ? _selection.websiteItems[i]
+            : false;
         children.add(
           SwitchListTile(
             title: Text(w.url.trim().isEmpty ? '—' : w.url.trim()),
@@ -314,10 +351,12 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.socialMedias.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldSocialMedia),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldSocialMedia),
+        ),
+      );
       for (var i = 0; i < contact.socialMedias.length; i++) {
         final s = contact.socialMedias[i];
         final on = i < _selection.socialMediaItems.length
@@ -325,9 +364,7 @@ class _ContactFieldSelectionWidgetState
             : false;
         children.add(
           SwitchListTile(
-            title: Text(
-              s.username.trim().isEmpty ? '—' : s.username.trim(),
-            ),
+            title: Text(s.username.trim().isEmpty ? '—' : s.username.trim()),
             subtitle: Text(_socialSubtitle(s, loc)),
             value: on,
             onChanged: (v) => _setSocialMedia(i, v),
@@ -337,20 +374,26 @@ class _ContactFieldSelectionWidgetState
     }
 
     if (contact.notes.isNotEmpty) {
-      children.add(Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: FormSectionTitle(title: loc.fieldNotes),
-      ));
+      children.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+          child: FormSectionTitle(title: loc.fieldNotes),
+        ),
+      );
       for (var i = 0; i < contact.notes.length; i++) {
         final n = contact.notes[i];
-        final on = i < _selection.noteItems.length ? _selection.noteItems[i] : false;
+        final on = i < _selection.noteItems.length
+            ? _selection.noteItems[i]
+            : false;
         final preview = n.note.trim();
         children.add(
           SwitchListTile(
             title: Text(
               preview.isEmpty
                   ? '—'
-                  : (preview.length > 80 ? '${preview.substring(0, 80)}…' : preview),
+                  : (preview.length > 80
+                        ? '${preview.substring(0, 80)}…'
+                        : preview),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

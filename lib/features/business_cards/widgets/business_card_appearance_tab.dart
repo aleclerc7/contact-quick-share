@@ -36,16 +36,24 @@ class BusinessCardAppearanceTab extends ConsumerWidget {
     );
   }
 
-  void _onConfigChanged(WidgetRef ref, BusinessCard card, AppearanceConfig config) {
-    final baseCard = ref.read(businessCardDetailNotifierProvider(cardId)).valueOrNull ?? card;
-    onCardChanged(baseCard.copyWith(
-      backgroundColor: config.backgroundColor,
-      textColor: config.textColor,
-      qrAppearance: config.qrAppearance,
-      cardPhoto: config.cardPhoto,
-      qrLogo: config.qrLogo,
-      updatedAt: DateTime.now().millisecondsSinceEpoch,
-    ));
+  void _onConfigChanged(
+    WidgetRef ref,
+    BusinessCard card,
+    AppearanceConfig config,
+  ) {
+    final baseCard =
+        ref.read(businessCardDetailNotifierProvider(cardId)).valueOrNull ??
+        card;
+    onCardChanged(
+      baseCard.copyWith(
+        backgroundColor: config.backgroundColor,
+        textColor: config.textColor,
+        qrAppearance: config.qrAppearance,
+        cardPhoto: config.cardPhoto,
+        qrLogo: config.qrLogo,
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
   }
 
   @override
@@ -59,11 +67,13 @@ class BusinessCardAppearanceTab extends ConsumerWidget {
     final displayName = card.displayFullName.isNotEmpty
         ? card.displayFullName
         : 'Your Name';
-    final subtitle = [card.displayOrg, card.displayTitle]
-        .where((s) => s.isNotEmpty)
-        .join(' • ');
-    final displaySubtitle =
-        subtitle.isNotEmpty ? subtitle : loc.previewYourInfo;
+    final subtitle = [
+      card.displayOrg,
+      card.displayTitle,
+    ].where((s) => s.isNotEmpty).join(' • ');
+    final displaySubtitle = subtitle.isNotEmpty
+        ? subtitle
+        : loc.previewYourInfo;
 
     return AppearanceEditorWidget(
       config: _cardToConfig(card),

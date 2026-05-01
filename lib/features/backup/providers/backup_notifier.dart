@@ -42,9 +42,9 @@ class BackupError extends BackupResult {
 /// Notifier for backup export and import operations.
 class BackupNotifier {
   BackupNotifier(this._ref)
-      : _repo = _ref.read(backupRepositoryProvider),
-        _settingsRepo = _ref.read(settingsRepositoryProvider),
-        _cardsRepo = _ref.read(businessCardRepositoryProvider);
+    : _repo = _ref.read(backupRepositoryProvider),
+      _settingsRepo = _ref.read(settingsRepositoryProvider),
+      _cardsRepo = _ref.read(businessCardRepositoryProvider);
 
   final Ref _ref;
   final BackupRepository _repo;
@@ -64,20 +64,16 @@ class BackupNotifier {
       );
       final now = DateTime.now();
       final date = now.toIso8601String().split('T').first;
-      final time = '${now.hour.toString().padLeft(2, '0')}-'
+      final time =
+          '${now.hour.toString().padLeft(2, '0')}-'
           '${now.minute.toString().padLeft(2, '0')}-'
           '${now.second.toString().padLeft(2, '0')}';
       final bytes = Uint8List.fromList(utf8.encode(json));
-      
+
       const shareService = ShareService();
       await shareService.share(
         ShareParams(
-          files: [
-            XFile.fromData(
-              bytes,
-              mimeType: 'application/json',
-            ),
-          ],
+          files: [XFile.fromData(bytes, mimeType: 'application/json')],
           fileNameOverrides: ['contact_quick_share_export_${date}_$time.json'],
           text: 'Contact Quick Share backup',
           subject: 'Contact Quick Share backup',

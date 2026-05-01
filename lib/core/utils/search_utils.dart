@@ -20,7 +20,10 @@ bool containsMatch(String text, String query) {
 /// Finds the match range in [text] for [query] (accent-insensitive).
 /// Returns (start, end) in original [text] indices, or null if no match.
 /// Handles length changes from removeDiacritics (e.g. "œ" → "oe").
-({int start, int end})? findMatchRangeAccentInsensitive(String text, String query) {
+({int start, int end})? findMatchRangeAccentInsensitive(
+  String text,
+  String query,
+) {
   if (query.isEmpty || text.isEmpty) return null;
   final normQuery = normalizeForSearch(query);
   if (normQuery.isEmpty) return null;
@@ -76,18 +79,30 @@ bool containsMatch(String text, String query) {
   final snippet = '$prefix${note.substring(snippetStart, snippetEnd)}$suffix';
   final matchStartInSnippet = prefix.length + (matchStart - snippetStart);
   final matchEndInSnippet = prefix.length + (matchEnd - snippetStart);
-  return (snippet: snippet, matchStart: matchStartInSnippet, matchEnd: matchEndInSnippet);
+  return (
+    snippet: snippet,
+    matchStart: matchStartInSnippet,
+    matchEnd: matchEndInSnippet,
+  );
 }
 
 /// Tries to find a match in [text]; returns SearchHit if found.
 SearchHit? _tryMatch(String text, String query) {
   final range = findMatchRangeAccentInsensitive(text, query);
   if (range == null) return null;
-  return SearchHit(displayText: text, matchStart: range.start, matchEnd: range.end);
+  return SearchHit(
+    displayText: text,
+    matchStart: range.start,
+    matchEnd: range.end,
+  );
 }
 
 /// Tries to find a match in [note]; returns SearchHit with snippet if found.
-SearchHit? _tryMatchNote(String note, String query, {bool includeNotes = true}) {
+SearchHit? _tryMatchNote(
+  String note,
+  String query, {
+  bool includeNotes = true,
+}) {
   if (!includeNotes || note.isEmpty) return null;
   final range = findMatchRangeAccentInsensitive(note, query);
   if (range == null) return null;
@@ -100,7 +115,11 @@ SearchHit? _tryMatchNote(String note, String query, {bool includeNotes = true}) 
 }
 
 /// Returns the first search hit in [contact], or null.
-SearchHit? findFirstHitInContact(Contact contact, String query, {bool includeNotes = true}) {
+SearchHit? findFirstHitInContact(
+  Contact contact,
+  String query, {
+  bool includeNotes = true,
+}) {
   if (query.isEmpty) return null;
 
   final displayName = contact.displayName ?? '';
@@ -109,7 +128,14 @@ SearchHit? findFirstHitInContact(Contact contact, String query, {bool includeNot
 
   final n = contact.name;
   if (n != null) {
-    for (final part in [n.first, n.last, n.prefix, n.middle, n.suffix, n.nickname]) {
+    for (final part in [
+      n.first,
+      n.last,
+      n.prefix,
+      n.middle,
+      n.suffix,
+      n.nickname,
+    ]) {
       final s = part ?? '';
       if (s.isEmpty) continue;
       hit = _tryMatch(s, query);
@@ -157,7 +183,11 @@ SearchHit? findFirstHitInContact(Contact contact, String query, {bool includeNot
 }
 
 /// Returns the first search hit in [card], or null.
-SearchHit? findFirstHitInBusinessCard(BusinessCard card, String query, {bool includeNotes = true}) {
+SearchHit? findFirstHitInBusinessCard(
+  BusinessCard card,
+  String query, {
+  bool includeNotes = true,
+}) {
   if (query.isEmpty) return null;
 
   var hit = _tryMatch(card.cardName, query);

@@ -45,8 +45,7 @@ class ColorPickerConfig {
   static const String tonalSubheadingLabel = 'Material 3 tonal palette';
 
   /// Subheading for the HSV wheel picker. Empty = hidden (saves space).
-  static const String wheelSubheadingLabel =
-      'Selected color and its shades';
+  static const String wheelSubheadingLabel = 'Selected color and its shades';
 
   /// Subheading for the opacity slider. Empty = hidden (saves space).
   static const String opacitySubheadingLabel = 'Opacity';
@@ -125,9 +124,7 @@ class ColorPickerConfig {
   /// Text style for the picker type tab labels (Primary, Accent, Wheel, etc.).
   /// Use a larger font size and line height so full labels are visible.
   static TextStyle pickerTypeTextStyle(BuildContext context) =>
-      Theme.of(context).textTheme.titleSmall?.copyWith(
-            height: 1.3,
-          ) ??
+      Theme.of(context).textTheme.titleSmall?.copyWith(height: 1.3) ??
       const TextStyle(fontSize: 14, height: 1.3);
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -172,10 +169,10 @@ class ColorPickerConfig {
 
   static const ColorPickerCopyPasteBehavior copyPasteBehavior =
       ColorPickerCopyPasteBehavior(
-    copyButton: false,
-    pasteButton: false,
-    longPressMenu: false,
-  );
+        copyButton: false,
+        pasteButton: false,
+        longPressMenu: false,
+      );
 
   // ─────────────────────────────────────────────────────────────────────────
   // ACTION BUTTONS (OK / Cancel)
@@ -183,10 +180,10 @@ class ColorPickerConfig {
 
   static const ColorPickerActionButtons actionButtons =
       ColorPickerActionButtons(
-    okButton: false,
-    closeButton: false,
-    dialogActionButtons: true,
-  );
+        okButton: false,
+        closeButton: false,
+        dialogActionButtons: true,
+      );
 
   // ─────────────────────────────────────────────────────────────────────────
   // DIALOG
@@ -212,7 +209,9 @@ Map<ColorPickerType, String> _pickerTypeLabels(AppLocalizations loc) => {
   ColorPickerType.wheel: loc.colorPickerWheel,
 };
 
-Map<ColorSwatch<Object>, String> _localizedCustomSwatches(AppLocalizations loc) {
+Map<ColorSwatch<Object>, String> _localizedCustomSwatches(
+  AppLocalizations loc,
+) {
   final src = ColorPickerConfig.customColorSwatchesAndNames;
   final nameMap = <String, String>{
     'Dark navy': loc.colorPickerDarkNavy,
@@ -237,106 +236,105 @@ Future<Color?> showAppColorPickerDialogWithConfirmation(
   final loc = AppLocalizations.of(context)!;
   final theme = Theme.of(context);
   Color selectedColor = color;
-  final confirmed = await ColorPicker(
-    color: color,
-    onColorChanged: (Color newColor) {
-      selectedColor = newColor;
-    },
-    pickersEnabled: ColorPickerConfig.pickersEnabled,
-    enableShadesSelection: ColorPickerConfig.enableShadesSelection,
-    includeIndex850: ColorPickerConfig.includeIndex850,
-    enableTonalPalette: ColorPickerConfig.enableTonalPalette,
-    tonalPaletteFixedMinChroma: ColorPickerConfig.tonalPaletteFixedMinChroma,
-    crossAxisAlignment: ColorPickerConfig.crossAxisAlignment,
-    padding: ColorPickerConfig.padding,
-    columnSpacing: ColorPickerConfig.columnSpacing,
-    toolbarSpacing: ColorPickerConfig.toolbarSpacing,
-    shadesSpacing: ColorPickerConfig.shadesSpacing,
-    enableOpacity: ColorPickerConfig.enableOpacity,
-    opacityTrackHeight: ColorPickerConfig.opacityTrackHeight,
-    opacityTrackWidth: ColorPickerConfig.opacityTrackWidth,
-    opacityThumbRadius: ColorPickerConfig.opacityThumbRadius,
-    actionButtons: ColorPickerConfig.actionButtons,
-    copyPasteBehavior: ColorPickerConfig.copyPasteBehavior,
-    width: ColorPickerConfig.colorItemWidth,
-    height: ColorPickerConfig.colorItemHeight,
-    spacing: ColorPickerConfig.colorItemSpacing,
-    runSpacing: ColorPickerConfig.colorItemRunSpacing,
-    tonalColorSameSize: ColorPickerConfig.tonalColorSameSize,
-    elevation: ColorPickerConfig.colorItemElevation,
-    hasBorder: ColorPickerConfig.colorItemHasBorder,
-    borderRadius: ColorPickerConfig.colorItemBorderRadius,
-    wheelDiameter: ColorPickerConfig.wheelDiameter,
-    wheelWidth: ColorPickerConfig.wheelWidth,
-    wheelSquarePadding: ColorPickerConfig.wheelSquarePadding,
-    wheelSquareBorderRadius: ColorPickerConfig.wheelSquareBorderRadius,
-    wheelHasBorder: ColorPickerConfig.wheelHasBorder,
-    title: null,
-    heading: null,
-    subheading: Text(
-      loc.colorPickerColorShade,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    tonalSubheading: Text(
-      loc.colorPickerTonalPalette,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    wheelSubheading: Text(
-      loc.colorPickerSelectedColorShades,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    opacitySubheading: Text(
-      loc.colorPickerOpacity,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    recentColorsSubheading: Text(
-      loc.colorPickerRecentColors,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    pickerTypeLabels: _pickerTypeLabels(loc),
-    pickerTypeTextStyle: ColorPickerConfig.pickerTypeTextStyle(context),
-    customColorSwatchesAndNames: _localizedCustomSwatches(loc),
-    customSecondaryColorSwatchesAndNames: _localizedCustomSwatches(loc),
-    showMaterialName: ColorPickerConfig.showMaterialName,
-    showColorName: ColorPickerConfig.showColorName,
-    showColorCode: ColorPickerConfig.showColorCode,
-    colorCodeHasColor: ColorPickerConfig.colorCodeHasColor,
-    showEditIconButton: ColorPickerConfig.showEditIconButton,
-    focusedEditHasNoColor: ColorPickerConfig.focusedEditHasNoColor,
-    colorCodeReadOnly: ColorPickerConfig.colorCodeReadOnly,
-    showColorValue: ColorPickerConfig.showColorValue,
-    showRecentColors: ColorPickerConfig.showRecentColors,
-    maxRecentColors: ColorPickerConfig.maxRecentColors,
-    recentColors: ColorPickerConfig.recentColors,
-    enableTooltips: ColorPickerConfig.enableTooltips,
-  ).showPickerDialog(
-    context,
-    title: null,
-    contentPadding: ColorPickerConfig.padding,
-    backgroundColor: null,
-    constraints: ColorPickerConfig.constraints,
-    barrierColor: ColorPickerConfig.barrierColor,
-    elevation: ColorPickerConfig.dialogElevation,
-  );
+  final confirmed =
+      await ColorPicker(
+        color: color,
+        onColorChanged: (Color newColor) {
+          selectedColor = newColor;
+        },
+        pickersEnabled: ColorPickerConfig.pickersEnabled,
+        enableShadesSelection: ColorPickerConfig.enableShadesSelection,
+        includeIndex850: ColorPickerConfig.includeIndex850,
+        enableTonalPalette: ColorPickerConfig.enableTonalPalette,
+        tonalPaletteFixedMinChroma:
+            ColorPickerConfig.tonalPaletteFixedMinChroma,
+        crossAxisAlignment: ColorPickerConfig.crossAxisAlignment,
+        padding: ColorPickerConfig.padding,
+        columnSpacing: ColorPickerConfig.columnSpacing,
+        toolbarSpacing: ColorPickerConfig.toolbarSpacing,
+        shadesSpacing: ColorPickerConfig.shadesSpacing,
+        enableOpacity: ColorPickerConfig.enableOpacity,
+        opacityTrackHeight: ColorPickerConfig.opacityTrackHeight,
+        opacityTrackWidth: ColorPickerConfig.opacityTrackWidth,
+        opacityThumbRadius: ColorPickerConfig.opacityThumbRadius,
+        actionButtons: ColorPickerConfig.actionButtons,
+        copyPasteBehavior: ColorPickerConfig.copyPasteBehavior,
+        width: ColorPickerConfig.colorItemWidth,
+        height: ColorPickerConfig.colorItemHeight,
+        spacing: ColorPickerConfig.colorItemSpacing,
+        runSpacing: ColorPickerConfig.colorItemRunSpacing,
+        tonalColorSameSize: ColorPickerConfig.tonalColorSameSize,
+        elevation: ColorPickerConfig.colorItemElevation,
+        hasBorder: ColorPickerConfig.colorItemHasBorder,
+        borderRadius: ColorPickerConfig.colorItemBorderRadius,
+        wheelDiameter: ColorPickerConfig.wheelDiameter,
+        wheelWidth: ColorPickerConfig.wheelWidth,
+        wheelSquarePadding: ColorPickerConfig.wheelSquarePadding,
+        wheelSquareBorderRadius: ColorPickerConfig.wheelSquareBorderRadius,
+        wheelHasBorder: ColorPickerConfig.wheelHasBorder,
+        title: null,
+        heading: null,
+        subheading: Text(
+          loc.colorPickerColorShade,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        tonalSubheading: Text(
+          loc.colorPickerTonalPalette,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        wheelSubheading: Text(
+          loc.colorPickerSelectedColorShades,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        opacitySubheading: Text(
+          loc.colorPickerOpacity,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        recentColorsSubheading: Text(
+          loc.colorPickerRecentColors,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        pickerTypeLabels: _pickerTypeLabels(loc),
+        pickerTypeTextStyle: ColorPickerConfig.pickerTypeTextStyle(context),
+        customColorSwatchesAndNames: _localizedCustomSwatches(loc),
+        customSecondaryColorSwatchesAndNames: _localizedCustomSwatches(loc),
+        showMaterialName: ColorPickerConfig.showMaterialName,
+        showColorName: ColorPickerConfig.showColorName,
+        showColorCode: ColorPickerConfig.showColorCode,
+        colorCodeHasColor: ColorPickerConfig.colorCodeHasColor,
+        showEditIconButton: ColorPickerConfig.showEditIconButton,
+        focusedEditHasNoColor: ColorPickerConfig.focusedEditHasNoColor,
+        colorCodeReadOnly: ColorPickerConfig.colorCodeReadOnly,
+        showColorValue: ColorPickerConfig.showColorValue,
+        showRecentColors: ColorPickerConfig.showRecentColors,
+        maxRecentColors: ColorPickerConfig.maxRecentColors,
+        recentColors: ColorPickerConfig.recentColors,
+        enableTooltips: ColorPickerConfig.enableTooltips,
+      ).showPickerDialog(
+        context,
+        title: null,
+        contentPadding: ColorPickerConfig.padding,
+        backgroundColor: null,
+        constraints: ColorPickerConfig.constraints,
+        barrierColor: ColorPickerConfig.barrierColor,
+        elevation: ColorPickerConfig.dialogElevation,
+      );
   return confirmed ? selectedColor : null;
 }
 
 /// Shows the app's color picker dialog with all options from [ColorPickerConfig].
 /// Returns the selected color, or the original color if the user cancels.
-Future<Color> showAppColorPickerDialog(
-  BuildContext context,
-  Color color,
-) {
+Future<Color> showAppColorPickerDialog(BuildContext context, Color color) {
   final loc = AppLocalizations.of(context)!;
   final theme = Theme.of(context);
 
@@ -348,33 +346,23 @@ Future<Color> showAppColorPickerDialog(
     heading: null,
     subheading: Text(
       loc.colorPickerColorShade,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     ),
     tonalSubheading: Text(
       loc.colorPickerTonalPalette,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     ),
     wheelSubheading: Text(
       loc.colorPickerSelectedColorShades,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     ),
     opacitySubheading: Text(
       loc.colorPickerOpacity,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     ),
     recentColorsSubheading: Text(
       loc.colorPickerRecentColors,
-      style: theme.textTheme.titleSmall?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
     ),
     pickerTypeLabels: _pickerTypeLabels(loc),
     pickerTypeTextStyle: ColorPickerConfig.pickerTypeTextStyle(context),

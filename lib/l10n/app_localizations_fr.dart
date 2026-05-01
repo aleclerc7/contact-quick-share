@@ -25,11 +25,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get contactPermissionRequired =>
-      'L\'autorisation de contacts est requise pour afficher vos contacts.';
+      'L’autorisation de contacts est requise pour afficher vos contacts.';
 
   @override
   String get noCardsYet =>
-      'Aucune carte pour l\'instant.\nAjoutez votre première carte de visite.';
+      'Aucune carte pour l’instant.\nAjoutez votre première carte de visite.';
 
   @override
   String get openSettings => 'Ouvrir les paramètres';
@@ -39,6 +39,52 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get newBusinessCardTooltip => 'Nouvelle carte de visite';
+
+  @override
+  String get addBusinessCardSheetTitle => 'Nouvelle carte de visite';
+
+  @override
+  String get addBusinessCardStartBlank => 'Vide';
+
+  @override
+  String get addBusinessCardFromContact => 'Depuis un contact';
+
+  @override
+  String get addBusinessCardFromExistingCard =>
+      'À partir d’une autre carte de visite';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Choisir une carte de visite';
+
+  @override
+  String get copyBusinessCardFromThisAction => 'Copier cette carte de visite';
+
+  @override
+  String get businessCardNameCopySuffix => ' (copie)';
+
+  @override
+  String get noMatchingBusinessCards => 'Aucune carte de visite correspondante';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Choisir un contact';
+
+  @override
+  String get createCardFromContactAction =>
+      'Créer une carte de visite à partir d’un contact';
+
+  @override
+  String get importFromContactsNeedPermissionTitle =>
+      'Accès aux contacts requis';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'Pour créer une carte de visite à partir d’un contact, autorisez l’accès à vos contacts.';
+
+  @override
+  String get importFromContactsTryAgain => 'Réessayer';
+
+  @override
+  String get noContactsOnDevice => 'Aucun contact sur cet appareil';
 
   @override
   String get searchHint => 'Rechercher des cartes ou contacts…';
@@ -130,24 +176,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get import => 'Importer';
 
   @override
-  String get importSubtitle =>
-      'Restaurer à partir d\'une sauvegarde précédente';
+  String get importSubtitle => 'Restaurer à partir d’une sauvegarde précédente';
 
   @override
   String get about => 'À propos';
 
   @override
-  String get shareAppLink => 'Partager le lien de l\'app';
+  String get shareAppLink => 'Partager le lien de l’app';
 
   @override
-  String get shareAppLinkSubtitle => 'Code QR pour télécharger l\'application';
+  String get shareAppLinkSubtitle => 'Code QR pour télécharger l’application';
 
   @override
   String get license => 'Licence';
 
   @override
   String get licenseSubtitle =>
-      'Droits d\'auteur, licences open-source, code source';
+      'Droits d’auteur, licences open-source, code source';
 
   @override
   String get privacyPolicy => 'Politique de confidentialité';
@@ -177,8 +222,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get useDefault => 'Utiliser par défaut';
 
   @override
-  String get useDefaultSubtitle =>
-      'Suivre les couleurs du système ou de l\'app';
+  String get useDefaultSubtitle => 'Suivre les couleurs du système ou de l’app';
 
   @override
   String get useSameForBoth => 'Même couleur pour les deux';
@@ -237,7 +281,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get defaultShareFieldsIntro =>
-      'Lors du partage d\'un contact, ces champs sont sélectionnés par défaut. Vous pouvez modifier la sélection pour chaque contact.';
+      'Lors du partage d’un contact, ces champs sont sélectionnés par défaut. Vous pouvez modifier la sélection pour chaque contact.';
 
   @override
   String get fieldName => 'Nom';
@@ -334,7 +378,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get readMplLicense => 'Lire la MPL 2.0';
 
   @override
-  String get couldNotOpenLink => 'Impossible d\'ouvrir le lien';
+  String get couldNotOpenLink => 'Impossible d’ouvrir le lien';
 
   @override
   String copyrightFormat(Object year, Object author) {
@@ -358,11 +402,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cardNeedsData =>
-      'La carte doit contenir au moins un champ avec des données (nom, téléphone, e-mail). Le nom de la carte seul n\'est pas inclus dans la vCard.';
+      'La carte doit contenir au moins un champ avec des données (nom, téléphone, e-mail). Le nom de la carte seul n’est pas inclus dans la vCard.';
 
   @override
   String saveFailed(Object error) {
-    return 'Échec de l\'enregistrement : $error';
+    return 'Échec de l’enregistrement : $error';
   }
 
   @override
@@ -442,7 +486,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get remove => 'Supprimer';
 
   @override
-  String get cardNameHint => 'Pour le tri et l\'identification rapide';
+  String get cardNameHint => 'Pour le tri et l’identification rapide';
 
   @override
   String get company => 'Entreprise';
@@ -463,7 +507,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addresses => 'Adresses';
 
   @override
-  String get backgroundColor => 'Couleur d\'arrière-plan';
+  String get backgroundColor => 'Couleur d’arrière-plan';
 
   @override
   String get textColor => 'Couleur du texte';
@@ -539,7 +583,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get unknownPlatformDialogMessage =>
-      'Cette plateforme n\'est pas dans notre liste. Elle sera enregistrée comme propriété personnalisée (X-SOCIALPROFILE) dans le code QR, et non comme lien cliquable. Les propriétés personnalisées ne sont pas bien prises en charge par toutes les applications et tous les appareils.';
+      'Cette plateforme n’est pas dans notre liste. Elle sera enregistrée comme propriété personnalisée (X-SOCIALPROFILE) dans le code QR, et non comme lien cliquable. Les propriétés personnalisées ne sont pas bien prises en charge par toutes les applications et tous les appareils.';
 
   @override
   String get colorPickerPalette => 'Palette';
@@ -618,7 +662,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get jobTitle => 'Poste';
 
   @override
-  String get companyUnit => 'Unité de l\'entreprise';
+  String get companyUnit => 'Unité de l’entreprise';
 
   @override
   String get addJobTitle => 'Ajouter un poste';
@@ -633,10 +677,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get phoneLabel => 'Libellé du téléphone';
 
   @override
-  String get emailLabel => 'Libellé de l\'e-mail';
+  String get emailLabel => 'Libellé de l’e-mail';
 
   @override
-  String get addressLabel => 'Libellé de l\'adresse';
+  String get addressLabel => 'Libellé de l’adresse';
 
   @override
   String get phone => 'Téléphone';
@@ -669,7 +713,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get platformNameHint => 'ex. Mastodon, Bluesky';
 
   @override
-  String get username => 'Nom d\'utilisateur';
+  String get username => 'Nom d’utilisateur';
 
   @override
   String get addSocialMedia => 'Ajouter un réseau social';
@@ -698,7 +742,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get appearanceImageCouldNotProcess =>
-      'Impossible d\'utiliser cette image. Essayez une autre image PNG ou JPEG.';
+      'Impossible d’utiliser cette image. Essayez une autre image PNG ou JPEG.';
 
   @override
   String get deleteCard => 'Supprimer la carte';

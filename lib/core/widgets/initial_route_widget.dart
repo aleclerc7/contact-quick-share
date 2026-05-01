@@ -56,12 +56,14 @@ class _InitialRouteWidgetState extends ConsumerState<InitialRouteWidget> {
     return asyncResult.when(
       loading: () {
         ref.read(businessCardsListNotifierProvider);
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       },
       error: (err, _) => Scaffold(
-        body: Center(child: Text(AppLocalizations.of(context)!.errorGeneric(err.toString()))),
+        body: Center(
+          child: Text(
+            AppLocalizations.of(context)!.errorGeneric(err.toString()),
+          ),
+        ),
       ),
       data: (result) {
         if (result.showCard && result.cardId != null && _cardPushed) {

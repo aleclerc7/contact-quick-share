@@ -22,12 +22,14 @@ class BusinessCardTile extends ConsumerWidget {
     required this.onTap,
     this.searchHit,
     this.selected = false,
+    this.onLongPress,
   });
 
   final BusinessCard card;
   final VoidCallback onTap;
   final SearchHit? searchHit;
   final bool selected;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,23 +42,24 @@ class BusinessCardTile extends ConsumerWidget {
     final textColor = resolver.resolveTextColor(card.textColor);
     // Reverse-video highlight: text = bg, background = fg
 
-    final isHitInCardName = searchHit != null && searchHit!.displayText == card.cardName;
-    final isHitInDisplayName = searchHit != null && searchHit!.displayText == card.displayFullName;
-    final showSubtitle = searchHit != null && !isHitInCardName && !isHitInDisplayName;
+    final isHitInCardName =
+        searchHit != null && searchHit!.displayText == card.cardName;
+    final isHitInDisplayName =
+        searchHit != null && searchHit!.displayText == card.displayFullName;
+    final showSubtitle =
+        searchHit != null && !isHitInCardName && !isHitInDisplayName;
 
     return Material(
       color: bgColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: selected
-            ? BorderSide(
-                color: textColor.withValues(alpha: 0.6),
-                width: 2,
-              )
+            ? BorderSide(color: textColor.withValues(alpha: 0.6), width: 2)
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(16),

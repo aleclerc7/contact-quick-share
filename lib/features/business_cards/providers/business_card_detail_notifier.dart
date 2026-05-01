@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: MPL-2.0
 
+import 'dart:async';
+
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -10,6 +12,7 @@ import '../../../core/di/app_providers.dart';
 import '../../qr_code/models/qr_appearance.dart';
 import '../../settings/providers/settings_notifier.dart';
 import '../models/business_card.dart';
+import 'new_business_card_seed_provider.dart';
 
 part 'business_card_detail_notifier.g.dart';
 
@@ -22,6 +25,13 @@ class BusinessCardDetailNotifier extends _$BusinessCardDetailNotifier {
     final repo = ref.read(businessCardRepositoryProvider);
 
     if (cardId == null) {
+      final seed = ref.read(newBusinessCardSeedProvider);
+      if (seed != null) {
+        scheduleMicrotask(() {
+          ref.read(newBusinessCardSeedProvider.notifier).state = null;
+        });
+        return seed;
+      }
       final settings = ref.read(settingsNotifierProvider).valueOrNull;
       final defaultQrAppearance =
           settings?.defaultQrAppearance ?? QrAppearance.defaultAppearance();

@@ -15,9 +15,7 @@ class SettingsRepository {
     final prefs = await SharedPreferences.getInstance();
     final jsonStr = prefs.getString(AppSettings.storageKey);
     if (jsonStr == null || jsonStr.isEmpty) {
-      return AppSettings(
-        defaultQrAppearance: QrAppearance.defaultAppearance(),
-      );
+      return AppSettings(defaultQrAppearance: QrAppearance.defaultAppearance());
     }
     final json = jsonDecode(jsonStr) as Map<String, dynamic>;
     return AppSettings.fromJson(json);

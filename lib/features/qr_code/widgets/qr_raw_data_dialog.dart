@@ -10,10 +10,7 @@ import '../../../l10n/app_localizations.dart';
 /// Dialog that displays raw QR code data with copy support.
 /// Works for any string content (vCard, URL, WiFi, etc.).
 class QrRawDataDialog extends StatelessWidget {
-  const QrRawDataDialog({
-    super.key,
-    required this.content,
-  });
+  const QrRawDataDialog({super.key, required this.content});
 
   final String content;
 
@@ -28,7 +25,9 @@ class QrRawDataDialog extends StatelessWidget {
     await Clipboard.setData(ClipboardData(text: content));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.copiedToClipboard)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.copiedToClipboard),
+        ),
       );
     }
   }
@@ -43,9 +42,9 @@ class QrRawDataDialog extends StatelessWidget {
         child: SingleChildScrollView(
           child: SelectableText(
             content,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontFamily: 'monospace',
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontFamily: 'monospace'),
           ),
         ),
       ),

@@ -18,14 +18,12 @@ import '../providers/business_cards_list_notifier.dart';
 import '../widgets/business_card_appearance_tab.dart';
 import '../widgets/business_card_data_tab.dart'
     show BusinessCardDataTab, BusinessCardDataTabState;
+import '../widgets/confirm_delete_business_card_dialog.dart';
 
 /// Full-screen business card: QR view (default) or edit mode with Data/Appearance tabs.
 /// From QR, tap opens the action menu; swipe right-to-left enters edit.
 class BusinessCardDetailScreen extends ConsumerStatefulWidget {
-  const BusinessCardDetailScreen({
-    super.key,
-    this.cardId,
-  });
+  const BusinessCardDetailScreen({super.key, this.cardId});
 
   /// Null = new card. Non-null = edit existing.
   final String? cardId;
@@ -65,7 +63,9 @@ class _BusinessCardDetailScreenState
     if (_editTabController?.index == 1) {
       final draft = _dataTabKey.currentState?.getDraftCard();
       if (draft != null) {
-        ref.read(businessCardDetailNotifierProvider(widget.cardId).notifier).updateCard(draft);
+        ref
+            .read(businessCardDetailNotifierProvider(widget.cardId).notifier)
+            .updateCard(draft);
       }
     }
   }
@@ -93,29 +93,18 @@ class _BusinessCardDetailScreenState
 
   Future<void> _deleteCard(BusinessCard card) async {
     final loc = AppLocalizations.of(context)!;
-    final name = card.displayFullName.isNotEmpty ? card.displayFullName : card.cardName;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(loc.deleteCardTitle),
-        content: Text(loc.deleteCardMessage(name)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(loc.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: Text(loc.delete),
-          ),
-        ],
-      ),
+    final name = card.displayFullName.isNotEmpty
+        ? card.displayFullName
+        : card.cardName;
+    final confirmed = await showConfirmDeleteBusinessCardDialog(
+      context,
+      loc,
+      name,
     );
     if (!mounted || confirmed != true) return;
-    await ref.read(businessCardDetailNotifierProvider(widget.cardId).notifier).delete(card.id);
+    await ref
+        .read(businessCardDetailNotifierProvider(widget.cardId).notifier)
+        .delete(card.id);
     ref.invalidate(businessCardsListNotifierProvider);
     if (mounted) Navigator.of(context).pop(true);
   }
@@ -124,7 +113,11 @@ class _BusinessCardDetailScreenState
     final valid = _dataTabKey.currentState?.validateAndHighlight() ?? true;
     if (!valid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSpecifyLabelForCustom)),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.pleaseSpecifyLabelForCustom,
+          ),
+        ),
       );
       return false;
     }
@@ -133,9 +126,7 @@ class _BusinessCardDetailScreenState
     if (!toSave.hasVCardData) {
       _editTabController?.animateTo(0);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.cardNeedsData),
-        ),
+        SnackBar(content: Text(AppLocalizations.of(context)!.cardNeedsData)),
       );
       // Nested post-frame callbacks: when on Appearance tab, TabBarView disposes the Data tab.
       // One frame is not enough for it to rebuild after animateTo(0). Two frames ensure the
@@ -153,7 +144,9 @@ class _BusinessCardDetailScreenState
 
   Future<void> _saveAndFlipBack(BusinessCard card) async {
     try {
-      await ref.read(businessCardDetailNotifierProvider(widget.cardId).notifier).save(card);
+      await ref
+          .read(businessCardDetailNotifierProvider(widget.cardId).notifier)
+          .save(card);
       ref.invalidate(businessCardsListNotifierProvider);
       if (widget.cardId == null) {
         if (mounted) {
@@ -185,12 +178,13 @@ class _BusinessCardDetailScreenState
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final asyncCard = ref.watch(businessCardDetailNotifierProvider(widget.cardId));
+    final asyncCard = ref.watch(
+      businessCardDetailNotifierProvider(widget.cardId),
+    );
 
     return asyncCard.when(
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (err, _) => Scaffold(
         appBar: AppBar(title: Text(loc.error)),
         body: Center(child: Text(loc.errorGeneric(err.toString()))),
@@ -257,8 +251,9 @@ class _BusinessCardDetailScreenState
         if (save == true) {
           await _trySave(card);
         } else {
-          final notifier =
-              ref.read(businessCardDetailNotifierProvider(widget.cardId).notifier);
+          final notifier = ref.read(
+            businessCardDetailNotifierProvider(widget.cardId).notifier,
+          );
           if (_initialCardWhenEditMode != null) {
             notifier.updateCard(_initialCardWhenEditMode!);
           } else {
@@ -345,12 +340,17 @@ class _BusinessCardDetailScreenState
                       onSavePressed: () => _trySave(card),
                       onDelete: _deleteCard,
                       onClose: () => _onBackPressed(card),
-                      notifier: ref.read(businessCardDetailNotifierProvider(widget.cardId).notifier),
+                      notifier: ref.read(
+                        businessCardDetailNotifierProvider(
+                          widget.cardId,
+                        ).notifier,
+                      ),
                     )
                   : QrGestureWrapper(
                       key: const ValueKey('qr'),
                       payload: _payloadFromCard(card),
                       resolver: resolver,
+                      expansionScopeId: 'business_card_${card.id}',
                       onEnterEdit: () => _enterEditMode(card),
                       onClose: () => _onBackPressed(card),
                       onShareAsImage: () => _shareAsImage(card),
@@ -360,7 +360,9 @@ class _BusinessCardDetailScreenState
             ),
             if (!_isEditMode)
               QrCloseButton(
-                backgroundColor: resolver.resolveBackgroundColor(card.backgroundColor),
+                backgroundColor: resolver.resolveBackgroundColor(
+                  card.backgroundColor,
+                ),
                 iconColor: resolver.resolveTextColor(card.textColor),
                 onTap: () => _onBackPressed(card),
               ),
@@ -424,7 +426,11 @@ class _EditModeView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.person, size: 20, color: Theme.of(context).colorScheme.onSurface),
+                    Icon(
+                      Icons.person,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     const SizedBox(width: 8),
                     Text(loc.data),
                   ],
@@ -435,7 +441,11 @@ class _EditModeView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.palette, size: 20, color: Theme.of(context).colorScheme.onSurface),
+                    Icon(
+                      Icons.palette,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     const SizedBox(width: 8),
                     Text(loc.appearance),
                   ],

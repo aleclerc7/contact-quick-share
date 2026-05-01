@@ -58,19 +58,27 @@ class VcardLabelOptions {
     _ => label.name[0].toUpperCase() + label.name.substring(1),
   };
 
-  static String phoneDisplayName(PhoneLabel label, AppLocalizations? loc, [String? customLabel]) {
-    if (label == PhoneLabel.custom && customLabel != null && customLabel.isNotEmpty) {
+  static String phoneDisplayName(
+    PhoneLabel label,
+    AppLocalizations? loc, [
+    String? customLabel,
+  ]) {
+    if (label == PhoneLabel.custom &&
+        customLabel != null &&
+        customLabel.isNotEmpty) {
       return customLabel;
     }
-    return loc != null ? switch (label) {
-      PhoneLabel.mobile => loc.phoneLabelMobile,
-      PhoneLabel.work => loc.phoneLabelWork,
-      PhoneLabel.home => loc.phoneLabelHome,
-      PhoneLabel.main => loc.phoneLabelMain,
-      PhoneLabel.other => loc.phoneLabelOther,
-      PhoneLabel.custom => loc.phoneLabelCustom,
-      _ => label.name[0].toUpperCase() + label.name.substring(1),
-    } : _phoneDisplayNameEn(label);
+    return loc != null
+        ? switch (label) {
+            PhoneLabel.mobile => loc.phoneLabelMobile,
+            PhoneLabel.work => loc.phoneLabelWork,
+            PhoneLabel.home => loc.phoneLabelHome,
+            PhoneLabel.main => loc.phoneLabelMain,
+            PhoneLabel.other => loc.phoneLabelOther,
+            PhoneLabel.custom => loc.phoneLabelCustom,
+            _ => label.name[0].toUpperCase() + label.name.substring(1),
+          }
+        : _phoneDisplayNameEn(label);
   }
 
   static String _emailDisplayNameEn(EmailLabel label) => switch (label) {
@@ -81,17 +89,25 @@ class VcardLabelOptions {
     _ => label.name[0].toUpperCase() + label.name.substring(1),
   };
 
-  static String emailDisplayName(EmailLabel label, AppLocalizations? loc, [String? customLabel]) {
-    if (label == EmailLabel.custom && customLabel != null && customLabel.isNotEmpty) {
+  static String emailDisplayName(
+    EmailLabel label,
+    AppLocalizations? loc, [
+    String? customLabel,
+  ]) {
+    if (label == EmailLabel.custom &&
+        customLabel != null &&
+        customLabel.isNotEmpty) {
       return customLabel;
     }
-    return loc != null ? switch (label) {
-      EmailLabel.home => loc.emailLabelHome,
-      EmailLabel.work => loc.emailLabelWork,
-      EmailLabel.other => loc.emailLabelOther,
-      EmailLabel.custom => loc.emailLabelCustom,
-      _ => label.name[0].toUpperCase() + label.name.substring(1),
-    } : _emailDisplayNameEn(label);
+    return loc != null
+        ? switch (label) {
+            EmailLabel.home => loc.emailLabelHome,
+            EmailLabel.work => loc.emailLabelWork,
+            EmailLabel.other => loc.emailLabelOther,
+            EmailLabel.custom => loc.emailLabelCustom,
+            _ => label.name[0].toUpperCase() + label.name.substring(1),
+          }
+        : _emailDisplayNameEn(label);
   }
 
   static String _addressDisplayNameEn(AddressLabel label) => switch (label) {
@@ -102,43 +118,73 @@ class VcardLabelOptions {
     _ => label.name[0].toUpperCase() + label.name.substring(1),
   };
 
-  static String addressDisplayName(AddressLabel label, AppLocalizations? loc, [String? customLabel]) {
-    if (label == AddressLabel.custom && customLabel != null && customLabel.isNotEmpty) {
+  static String addressDisplayName(
+    AddressLabel label,
+    AppLocalizations? loc, [
+    String? customLabel,
+  ]) {
+    if (label == AddressLabel.custom &&
+        customLabel != null &&
+        customLabel.isNotEmpty) {
       return customLabel;
     }
-    return loc != null ? switch (label) {
-      AddressLabel.home => loc.addressLabelHome,
-      AddressLabel.work => loc.addressLabelWork,
-      AddressLabel.other => loc.addressLabelOther,
-      AddressLabel.custom => loc.addressLabelCustom,
-      _ => label.name[0].toUpperCase() + label.name.substring(1),
-    } : _addressDisplayNameEn(label);
+    return loc != null
+        ? switch (label) {
+            AddressLabel.home => loc.addressLabelHome,
+            AddressLabel.work => loc.addressLabelWork,
+            AddressLabel.other => loc.addressLabelOther,
+            AddressLabel.custom => loc.addressLabelCustom,
+            _ => label.name[0].toUpperCase() + label.name.substring(1),
+          }
+        : _addressDisplayNameEn(label);
   }
 
-  static String socialDisplayName(SocialMediaLabel label, AppLocalizations loc, [String? customLabel]) {
-    if (label == SocialMediaLabel.custom && customLabel != null && customLabel.isNotEmpty) {
+  static String socialDisplayName(
+    SocialMediaLabel label,
+    AppLocalizations loc, [
+    String? customLabel,
+  ]) {
+    if (label == SocialMediaLabel.custom &&
+        customLabel != null &&
+        customLabel.isNotEmpty) {
       return customLabel;
     }
-    return SocialPlatformResolver.socialMediaLabelDisplayName(label, loc, customLabel);
+    return SocialPlatformResolver.socialMediaLabelDisplayName(
+      label,
+      loc,
+      customLabel,
+    );
   }
 
   // --- Map unknown labels to Custom + customLabel on load ---
 
-  static (PhoneLabel, String?) normalizePhoneLabel(PhoneLabel label, String? customLabel, [AppLocalizations? loc]) {
+  static (PhoneLabel, String?) normalizePhoneLabel(
+    PhoneLabel label,
+    String? customLabel, [
+    AppLocalizations? loc,
+  ]) {
     if (phoneLabels.contains(label)) {
       return (label, customLabel);
     }
     return (PhoneLabel.custom, phoneDisplayName(label, loc, customLabel));
   }
 
-  static (EmailLabel, String?) normalizeEmailLabel(EmailLabel label, String? customLabel, [AppLocalizations? loc]) {
+  static (EmailLabel, String?) normalizeEmailLabel(
+    EmailLabel label,
+    String? customLabel, [
+    AppLocalizations? loc,
+  ]) {
     if (emailLabels.contains(label)) {
       return (label, customLabel);
     }
     return (EmailLabel.custom, emailDisplayName(label, loc, customLabel));
   }
 
-  static (AddressLabel, String?) normalizeAddressLabel(AddressLabel label, String? customLabel, [AppLocalizations? loc]) {
+  static (AddressLabel, String?) normalizeAddressLabel(
+    AddressLabel label,
+    String? customLabel, [
+    AppLocalizations? loc,
+  ]) {
     if (addressLabels.contains(label)) {
       return (label, customLabel);
     }

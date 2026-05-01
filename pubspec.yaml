@@ -5,7 +5,7 @@ description: >
   One- or two-tap fast — ideal for networking events, business cards, and
   everyday use. No accounts, no cloud, no internet required.
 publish_to: 'none'
-version: 1.0.1+4
+version: 1.1.0+5
 
 environment:
   sdk: ^3.10.4

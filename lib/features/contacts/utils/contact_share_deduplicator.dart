@@ -13,7 +13,9 @@ Contact toShareDedupedContact(Contact source) {
     phones: _dedupeByKey(source.phones, (p) => _normalizePhone(p.number)),
     emails: _dedupeByKey(source.emails, (e) => e.address.trim().toLowerCase()),
     organizations: _dedupeByKey(source.organizations, (o) {
-      return _normalizeText('${o.name ?? ''}|${o.departmentName ?? ''}|${o.jobTitle ?? ''}');
+      return _normalizeText(
+        '${o.name ?? ''}|${o.departmentName ?? ''}|${o.jobTitle ?? ''}',
+      );
     }),
     addresses: _dedupeByKey(source.addresses, (a) {
       final formatted = (a.formatted ?? '').trim();

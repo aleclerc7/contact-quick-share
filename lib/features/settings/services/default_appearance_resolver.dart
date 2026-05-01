@@ -18,21 +18,19 @@ class DefaultAppearanceResolver {
   final AppSettings? settings;
   final ColorScheme colorScheme;
 
-  Color get defaultBackgroundColor =>
-      settings?.defaultBackgroundColor != null
-          ? Color(settings!.defaultBackgroundColor!)
-          : colorScheme.surfaceContainerLow;
+  Color get defaultBackgroundColor => settings?.defaultBackgroundColor != null
+      ? Color(settings!.defaultBackgroundColor!)
+      : colorScheme.surfaceContainerLow;
 
-  Color get defaultTextColor =>
-      settings?.defaultTextColor != null
-          ? Color(settings!.defaultTextColor!)
-          : colorScheme.onSurface;
+  Color get defaultTextColor => settings?.defaultTextColor != null
+      ? Color(settings!.defaultTextColor!)
+      : colorScheme.onSurface;
 
   /// Default QR module color (settings default or theme onSurface).
   Color get defaultQrPrimaryColor =>
       settings?.defaultQrAppearance.primaryColor != null
-          ? Color(settings!.defaultQrAppearance.primaryColor!)
-          : colorScheme.onSurface;
+      ? Color(settings!.defaultQrAppearance.primaryColor!)
+      : colorScheme.onSurface;
 
   Color resolveBackgroundColor(int? value) =>
       value != null ? Color(value) : defaultBackgroundColor;

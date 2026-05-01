@@ -21,12 +21,12 @@ class BackupData {
   final List<BusinessCard> cards;
 
   Map<String, dynamic> toJson() => {
-        'backupVersion': backupVersion,
-        'exportedAt': exportedAt,
-        'appName': 'Contact Quick Share',
-        if (settings != null) 'settings': settings!.toJson(),
-        if (cards.isNotEmpty) 'cards': cards.map((c) => c.toBackupJson()).toList(),
-      };
+    'backupVersion': backupVersion,
+    'exportedAt': exportedAt,
+    'appName': 'Contact Quick Share',
+    if (settings != null) 'settings': settings!.toJson(),
+    if (cards.isNotEmpty) 'cards': cards.map((c) => c.toBackupJson()).toList(),
+  };
 
   factory BackupData.fromJson(Map<String, dynamic> json) {
     AppSettings? settings;

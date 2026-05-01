@@ -22,10 +22,9 @@ class QrShareActions {
     QrDisplayPayload payload,
     DefaultAppearanceResolver resolver,
   ) async {
-    final err = await ref.read(qrShareServiceProvider).shareAsImage(
-          payload,
-          resolver,
-        );
+    final err = await ref
+        .read(qrShareServiceProvider)
+        .shareAsImage(payload, resolver);
     if (context.mounted && err != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err)));
     }
@@ -51,11 +50,9 @@ class QrShareActions {
     DefaultAppearanceResolver resolver, {
     required String shareCaption,
   }) async {
-    final err = await ref.read(qrShareServiceProvider).shareSimpleQrAsImage(
-          payload,
-          resolver,
-          shareCaption: shareCaption,
-        );
+    final err = await ref
+        .read(qrShareServiceProvider)
+        .shareSimpleQrAsImage(payload, resolver, shareCaption: shareCaption);
     if (context.mounted && err != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err)));
     }

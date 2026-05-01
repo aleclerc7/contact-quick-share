@@ -4,8 +4,8 @@ Thanks for your interest in contributing. This project is open source under the 
 
 ## Where to start
 
-- Read [docs/architecture.md](docs/architecture.md) for MVVM, feature-first layout, and folder responsibilities.
-- Read [docs/ai-instructions.md](docs/ai-instructions.md) for coding rules (Riverpod, localization, file headers, etc.).
+- Read [.cursor/rules/01-ai-instructions.mdc](.cursor/rules/01-ai-instructions.mdc) for coding rules (Riverpod, localization, file headers, etc.).
+- Read [.cursor/rules/02-architecture.mdc](.cursor/rules/02-architecture.mdc) for MVVM, feature-first layout, and folder responsibilities.
 
 ## Development setup
 
@@ -29,7 +29,7 @@ Thanks for your interest in contributing. This project is open source under the 
 - **Feature-first structure** — `features/<feature>/{models,repositories,providers,screens,widgets}` plus shared code under `lib/core/`.
 - **Prefer** `riverpod_generator` and `@riverpod` where it fits the codebase.
 - **Localization** — Use `AppLocalizations`; assign `final loc = AppLocalizations.of(context)!;` once per build where possible.
-- **New Dart files** — Include the MPL 2.0 SPDX header at the top (see [docs/ai-instructions.md](docs/ai-instructions.md)).
+- **New Dart files** — Include the MPL 2.0 SPDX header at the top (see [.cursor/rules/01-ai-instructions.mdc](.cursor/rules/01-ai-instructions.mdc)).
 
 ## Pull requests
 

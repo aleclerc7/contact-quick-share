@@ -43,8 +43,9 @@ class AppearanceConfig {
       cardPhoto: identical(cardPhoto, _undefined)
           ? this.cardPhoto
           : cardPhoto as Uint8List?,
-      qrLogo:
-          identical(qrLogo, _undefined) ? this.qrLogo : qrLogo as Uint8List?,
+      qrLogo: identical(qrLogo, _undefined)
+          ? this.qrLogo
+          : qrLogo as Uint8List?,
     );
   }
 }

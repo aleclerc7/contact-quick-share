@@ -19,9 +19,7 @@ class LicenseScreen extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.license),
-      ),
+      appBar: AppBar(title: Text(loc.license)),
       body: SafeArea(
         top: false,
         child: ListView(
@@ -29,9 +27,9 @@ class LicenseScreen extends StatelessWidget {
           children: [
             Text(
               loc.appTitle,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             FutureBuilder<PackageInfo>(
@@ -52,10 +50,7 @@ class LicenseScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 8),
-            Text(
-              loc.licenseMplNotice,
-              style: const TextStyle(fontSize: 14),
-            ),
+            Text(loc.licenseMplNotice, style: const TextStyle(fontSize: 14)),
             const SizedBox(height: 8),
             TextButton.icon(
               onPressed: () {
@@ -93,15 +88,15 @@ class LicenseScreen extends StatelessWidget {
     try {
       final didLaunch = await launchUrl(uri, mode: LaunchMode.platformDefault);
       if (!didLaunch && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     } catch (_) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenLink)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(loc.couldNotOpenLink)));
       }
     }
   }

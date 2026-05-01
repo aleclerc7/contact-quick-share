@@ -24,8 +24,10 @@ class QrDisplayPayload {
 
   final String vCardContent;
   final QrAppearance qrAppearance;
+
   /// Contact representing exactly what is encoded in the vCard.
   final Contact displayContact;
+
   /// Optional photo override (e.g. business card display photo). When null, uses contact.photo.
   final Uint8List? photoOverride;
   final int? backgroundColor;
@@ -42,9 +44,13 @@ class QrDisplayPayload {
     }
     final n = displayContact.name;
     if (n != null) {
-      final parts = [n.prefix, n.first, n.middle, n.last, n.suffix]
-          .where((s) => (s ?? '').trim().isNotEmpty)
-          .toList();
+      final parts = [
+        n.prefix,
+        n.first,
+        n.middle,
+        n.last,
+        n.suffix,
+      ].where((s) => (s ?? '').trim().isNotEmpty).toList();
       if (parts.isNotEmpty) return parts.join(' ');
       if ((n.nickname ?? '').trim().isNotEmpty) return n.nickname!;
     }
@@ -63,18 +69,15 @@ class QrDisplayPayload {
   }
 
   /// Primary email from contact.
-  String get primaryEmail =>
-      displayContact.emails.isNotEmpty
-          ? displayContact.emails.first.address
-          : '';
+  String get primaryEmail => displayContact.emails.isNotEmpty
+      ? displayContact.emails.first.address
+      : '';
 
   /// Primary phone from contact.
-  String get primaryPhone =>
-      displayContact.phones.isNotEmpty
-          ? displayContact.phones.first.number
-          : '';
+  String get primaryPhone => displayContact.phones.isNotEmpty
+      ? displayContact.phones.first.number
+      : '';
 
   /// Photo: override if provided, otherwise from contact.
-  Uint8List? get photo =>
-      photoOverride ?? displayContact.photo?.thumbnail;
+  Uint8List? get photo => photoOverride ?? displayContact.photo?.thumbnail;
 }

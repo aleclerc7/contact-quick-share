@@ -1,0 +1,18 @@
+---
+description: Reminder to load PRD/plan when working under lib/ (not always inlined)
+globs: lib/**/*.dart
+alwaysApply: false
+---
+
+# Product docs (not in every chat)
+
+Requirements and roadmap stay in **`docs/`** (readable on GitHub, shareable outside Cursor). Do **not** duplicate full PRD/plan into rules unless you intentionally want huge always-on context.
+
+| File | Purpose |
+|------|---------|
+| `docs/prd.md` | Functional requirements, product scope |
+| `docs/plan.md` | Phases, roadmap, current focus |
+
+**Easiest use:** `@docs/prd.md` and/or `@docs/plan.md` in chat when the task touches product behavior, priorities, or “what should this feature do?”
+
+If you are editing `lib/` and those files are not in context yet, open or attach them before implementing behavior changes.

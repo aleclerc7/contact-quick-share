@@ -22,6 +22,7 @@ class HighlightedText extends StatelessWidget {
   final int matchEnd;
   final TextStyle? baseStyle;
   final Color? highlightColor;
+
   /// When set, paints background behind the match (reverse-video style when used with swapped fg/bg).
   final Color? highlightBackgroundColor;
 

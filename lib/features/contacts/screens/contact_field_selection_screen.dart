@@ -23,10 +23,7 @@ import '../widgets/contact_field_selection_widget.dart';
 /// - QR view: tap opens action menu; swipe right-to-left enters field selection (edit).
 /// - Edit-from-QR: back arrow returns to QR (no Quick Share button). X on QR closes to main.
 class ContactFieldSelectionScreen extends ConsumerStatefulWidget {
-  const ContactFieldSelectionScreen({
-    super.key,
-    required this.contact,
-  });
+  const ContactFieldSelectionScreen({super.key, required this.contact});
 
   /// Contact from list (has neededProperties). No fetch on load.
   final Contact contact;
@@ -114,13 +111,15 @@ class _ContactFieldSelectionScreenState
         setState(() => _isRefreshing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.contactNotFoundOrDeleted),
+            content: Text(
+              AppLocalizations.of(context)!.contactNotFoundOrDeleted,
+            ),
           ),
         );
         return;
       }
-      final defaults = ref.read(settingsNotifierProvider).valueOrNull
-              ?.defaultShareFields ??
+      final defaults =
+          ref.read(settingsNotifierProvider).valueOrNull?.defaultShareFields ??
           ContactFieldSelection.defaultSelection();
       setState(() {
         _contact = fresh;
@@ -138,7 +137,9 @@ class _ContactFieldSelectionScreenState
       setState(() => _isRefreshing = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.errorGeneric(e.toString())),
+          content: Text(
+            AppLocalizations.of(context)!.errorGeneric(e.toString()),
+          ),
         ),
       );
     }
@@ -206,6 +207,8 @@ class _ContactFieldSelectionScreenState
                 key: const ValueKey('qr'),
                 payload: _buildPayload(contact, selection),
                 resolver: _createResolver(),
+                expansionScopeId:
+                    'contact_share_${contact.id ?? 'no_device_id'}',
                 onClose: _closeToMain,
                 onEnterEdit: () => _flipToFieldSelection(fromQrEdit: true),
                 onShareAsImage: () => _shareAsImage(contact),
@@ -218,7 +221,9 @@ class _ContactFieldSelectionScreenState
                 selection: selection,
                 onSelectionChanged: (s) => setState(() => _selection = s),
                 onBack: _cameFromQrEdit ? _onBackFromQrEdit : _closeToMain,
-                onQuickShare: _cameFromQrEdit ? null : (hasAnyField ? _onQuickShare : null),
+                onQuickShare: _cameFromQrEdit
+                    ? null
+                    : (hasAnyField ? _onQuickShare : null),
                 isRefreshing: _isRefreshing,
                 loc: AppLocalizations.of(context)!,
               ),
@@ -298,6 +303,13 @@ class _FieldSelectionView extends StatelessWidget {
                       : Text(loc.quickShare),
                 ),
               ),
+            )
+          else
+            SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              child: const SizedBox.shrink(),
             ),
         ],
       ),
@@ -311,6 +323,7 @@ class _QrView extends StatelessWidget {
     super.key,
     required this.payload,
     required this.resolver,
+    required this.expansionScopeId,
     required this.onClose,
     required this.onEnterEdit,
     required this.onShareAsImage,
@@ -320,6 +333,7 @@ class _QrView extends StatelessWidget {
 
   final QrDisplayPayload payload;
   final DefaultAppearanceResolver resolver;
+  final String expansionScopeId;
   final VoidCallback onClose;
   final VoidCallback onEnterEdit;
   final VoidCallback onShareAsImage;
@@ -328,8 +342,9 @@ class _QrView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        resolver.resolveBackgroundColor(payload.backgroundColor);
+    final backgroundColor = resolver.resolveBackgroundColor(
+      payload.backgroundColor,
+    );
     final textColor = resolver.resolveTextColor(payload.textColor);
 
     return Scaffold(
@@ -339,6 +354,7 @@ class _QrView extends StatelessWidget {
           QrGestureWrapper(
             payload: payload,
             resolver: resolver,
+            expansionScopeId: expansionScopeId,
             onEnterEdit: onEnterEdit,
             onClose: onClose,
             onShareAsImage: onShareAsImage,

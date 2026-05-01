@@ -31,8 +31,7 @@ final qrShareServiceProvider = Provider<QrShareService>((ref) {
 });
 
 /// Repository for business card CRUD operations.
-final businessCardRepositoryProvider =
-    Provider<BusinessCardRepository>((ref) {
+final businessCardRepositoryProvider = Provider<BusinessCardRepository>((ref) {
   final dbManager = ref.watch(databaseManagerProvider);
   return BusinessCardRepository(dbManager);
 });

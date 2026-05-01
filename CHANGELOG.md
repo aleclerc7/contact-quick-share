@@ -5,15 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] - 2026-03-31
+
+## [1.1.0] — 2026-04-30
+
+Business-card workflow (create, duplicate, delete) and fixes for QR/detail presentation and layout.
+
+### Added
+
+- **Create card from contact** — Start a business card from an existing device contact.
+- **Duplicate card** — Duplicate a contact card from the card’s context menu.
+- **Delete card** — Delete a contact card from the same menu, with a confirmation prompt (aligned with the edit flow).
+
+### Fixed
+
+- **PNG transparency** — Transparent areas in exported PNGs no longer show an unintended blurred background.
+- **QR “more details”** — The details section no longer repeats phone and email (or other fields) already shown in the primary summary; only additional fields appear.
+- **Field selector layout** — Bottom safe area and padding so the last toggles are not covered by action buttons when the share button is hidden (e.g. in edit mode).
+
+
+## [1.0.1] — 2026-03-31
+
+Improved contact information display in specific cases; initial public release of the source code.
 
 ### Fixed
 
 - **Duplicate contact data** — Fixed possible duplicate contact information to be shared.
 
-## [1.0.0] - 2026-03-30
 
-Initial limited beta release of Contact Quick Share.
+## 1.0.0 — 2026-03-30
+
+Internal limited beta only; no public Git tag or source tree for this version.
 
 ### Added
 
@@ -31,5 +52,6 @@ Initial limited beta release of Contact Quick Share.
 
 - Contact data and app data stored locally on device; no write access to the system address book (see project documentation for details).
 
-[Unreleased]: https://github.com/aleclerc/contact-quick-share/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/aleclerc/contact-quick-share/releases/tag/v1.0.0
+[Unreleased]: https://github.com/aleclerc/contact-quick-share/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/aleclerc/contact-quick-share/releases/tag/v1.1.0
+[1.0.1]: https://github.com/aleclerc/contact-quick-share/releases/tag/v1.0.1

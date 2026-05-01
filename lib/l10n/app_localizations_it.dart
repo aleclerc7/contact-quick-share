@@ -41,6 +41,54 @@ class AppLocalizationsIt extends AppLocalizations {
   String get newBusinessCardTooltip => 'Nuovo biglietto da visita';
 
   @override
+  String get addBusinessCardSheetTitle => 'Nuovo biglietto da visita';
+
+  @override
+  String get addBusinessCardStartBlank => 'Inizia da zero';
+
+  @override
+  String get addBusinessCardFromContact => 'Da un contatto';
+
+  @override
+  String get addBusinessCardFromExistingCard =>
+      'Da un altro biglietto da visita';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Scegli un biglietto da visita';
+
+  @override
+  String get copyBusinessCardFromThisAction =>
+      'Copia questo biglietto da visita';
+
+  @override
+  String get businessCardNameCopySuffix => ' (copia)';
+
+  @override
+  String get noMatchingBusinessCards =>
+      'Nessun biglietto da visita corrispondente';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Scegli un contatto';
+
+  @override
+  String get createCardFromContactAction =>
+      'Crea biglietto da visita da contatto';
+
+  @override
+  String get importFromContactsNeedPermissionTitle =>
+      'Accesso ai contatti necessario';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'Per creare un biglietto da visita da un contatto, consenti l’accesso ai contatti.';
+
+  @override
+  String get importFromContactsTryAgain => 'Riprova';
+
+  @override
+  String get noContactsOnDevice => 'Nessun contatto su questo dispositivo';
+
+  @override
   String get searchHint => 'Cerca biglietti o contatti…';
 
   @override

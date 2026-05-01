@@ -9,8 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../business_cards/models/business_card.dart';
 import '../../business_cards/providers/business_cards_list_notifier.dart';
-import '../../../core/utils/collation_sort.dart';
-import '../../../core/utils/search_utils.dart';
+import '../../business_cards/utils/filter_business_cards_by_query.dart';
 import '../models/search_hit.dart';
 import 'contacts_list_notifier.dart';
 
@@ -26,39 +25,10 @@ AsyncValue<List<(BusinessCard, SearchHit?)>> filteredBusinessCards(Ref ref) {
   final includeNotes = !Platform.isIOS;
 
   return asyncCards.when(
-    data: (cards) => AsyncValue.data(_filterAndSortCards(cards, searchQuery, includeNotes)),
+    data: (cards) => AsyncValue.data(
+      filterAndSortBusinessCardsForDisplay(cards, searchQuery, includeNotes),
+    ),
     loading: () => const AsyncValue.loading(),
     error: (e, st) => AsyncValue.error(e, st),
   );
-}
-
-int _compareBusinessCards(
-  (BusinessCard, SearchHit?) a,
-  (BusinessCard, SearchHit?) b,
-) {
-  final cmp = CollationSort.compareStrings(a.$1.cardName, b.$1.cardName);
-  if (cmp != 0) return cmp;
-  return CollationSort.compareStrings(a.$1.displayFullName, b.$1.displayFullName);
-}
-
-List<(BusinessCard, SearchHit?)> _filterAndSortCards(
-  List<BusinessCard> cards,
-  String query,
-  bool includeNotes,
-) {
-  if (query.isEmpty) {
-    final result = cards.map((c) => (c, null as SearchHit?)).toList();
-    result.sort(_compareBusinessCards);
-    return result;
-  }
-
-  final withHits = <(BusinessCard, SearchHit?)>[];
-  for (final card in cards) {
-    final hit = findFirstHitInBusinessCard(card, query, includeNotes: includeNotes);
-    if (hit != null) {
-      withHits.add((card, hit));
-    }
-  }
-  withHits.sort(_compareBusinessCards);
-  return withHits;
 }

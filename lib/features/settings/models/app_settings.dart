@@ -31,6 +31,7 @@ class AppSettings {
   final int? themeSeedColorDark;
   final String? autoOpenCardId;
   final ContactFieldSelection? defaultShareFields;
+
   /// User-selected locale. Null means follow system.
   final Locale? locale;
 
@@ -77,22 +78,22 @@ class AppSettings {
   }
 
   Map<String, dynamic> toJson() => {
-        'defaultBackgroundColor': defaultBackgroundColor,
-        'defaultTextColor': defaultTextColor,
-        'defaultQrAppearance': defaultQrAppearance.toJson(),
-        'themeMode': themeMode == ThemeMode.light
-            ? 'light'
-            : themeMode == ThemeMode.dark
-                ? 'dark'
-                : 'system',
-        'themeSeedColor': themeSeedColor,
-        'themeSeedColorLight': themeSeedColorLight,
-        'themeSeedColorDark': themeSeedColorDark,
-        'autoOpenCardId': autoOpenCardId,
-        if (defaultShareFields != null)
-          'defaultShareFields': defaultShareFields!.toJson(),
-        if (locale != null) 'locale': locale!.languageCode,
-      };
+    'defaultBackgroundColor': defaultBackgroundColor,
+    'defaultTextColor': defaultTextColor,
+    'defaultQrAppearance': defaultQrAppearance.toJson(),
+    'themeMode': themeMode == ThemeMode.light
+        ? 'light'
+        : themeMode == ThemeMode.dark
+        ? 'dark'
+        : 'system',
+    'themeSeedColor': themeSeedColor,
+    'themeSeedColorLight': themeSeedColorLight,
+    'themeSeedColorDark': themeSeedColorDark,
+    'autoOpenCardId': autoOpenCardId,
+    if (defaultShareFields != null)
+      'defaultShareFields': defaultShareFields!.toJson(),
+    if (locale != null) 'locale': locale!.languageCode,
+  };
 
   static String get storageKey => _key;
 

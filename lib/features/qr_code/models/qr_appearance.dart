@@ -90,13 +90,10 @@ class QrAppearance {
           (json['dataModuleRoundFactor'] as num?)?.toDouble() ?? 1.0,
       eyeShapeDensity: (json['eyeShapeDensity'] as num?)?.toDouble() ?? 1.0,
       eyeShapeRounding: (json['eyeShapeRounding'] as num?)?.toDouble() ?? 0.0,
-      eyeShapeUnifiedFinder:
-          json['eyeShapeUnifiedFinder'] as bool? ?? true,
+      eyeShapeUnifiedFinder: json['eyeShapeUnifiedFinder'] as bool? ?? true,
       quietZoneModules: (json['quietZoneModules'] as num?)?.toDouble() ?? 0,
       gradient: json['gradient'] != null
-          ? QrGradientConfig.fromJson(
-              json['gradient'] as Map<String, dynamic>,
-            )
+          ? QrGradientConfig.fromJson(json['gradient'] as Map<String, dynamic>)
           : null,
       centerLogoEnabled: json['centerLogoEnabled'] as bool? ?? false,
       imagePosition: _imagePositionFromJson(json['imagePosition'] as String?),
@@ -104,19 +101,19 @@ class QrAppearance {
   }
 
   Map<String, dynamic> toJson() => {
-        'primaryColor': primaryColor,
-        'backgroundColor': backgroundColor,
-        'eyeShape': eyeShape.toJson(),
-        'dataModuleShape': dataModuleShape.toJson(),
-        'dataModuleRoundFactor': dataModuleRoundFactor,
-        'eyeShapeDensity': eyeShapeDensity,
-        'eyeShapeRounding': eyeShapeRounding,
-        'eyeShapeUnifiedFinder': eyeShapeUnifiedFinder,
-        'quietZoneModules': quietZoneModules,
-        if (gradient != null) 'gradient': gradient!.toJson(),
-        'centerLogoEnabled': centerLogoEnabled,
-        'imagePosition': imagePosition.name,
-      };
+    'primaryColor': primaryColor,
+    'backgroundColor': backgroundColor,
+    'eyeShape': eyeShape.toJson(),
+    'dataModuleShape': dataModuleShape.toJson(),
+    'dataModuleRoundFactor': dataModuleRoundFactor,
+    'eyeShapeDensity': eyeShapeDensity,
+    'eyeShapeRounding': eyeShapeRounding,
+    'eyeShapeUnifiedFinder': eyeShapeUnifiedFinder,
+    'quietZoneModules': quietZoneModules,
+    if (gradient != null) 'gradient': gradient!.toJson(),
+    'centerLogoEnabled': centerLogoEnabled,
+    'imagePosition': imagePosition.name,
+  };
 
   static PrettyQrDecorationImagePosition _imagePositionFromJson(String? value) {
     switch (value) {
@@ -178,26 +175,36 @@ class QrAppearance {
     required Color backgroundForContrast,
     Color? primaryColorOverride,
   }) {
-    final resolvedColor = primaryColorOverride ??
+    final resolvedColor =
+        primaryColorOverride ??
         resolvePrimaryColor(primaryColor, backgroundForContrast);
     final brush = gradient != null
         ? PrettyQrBrush.gradient(gradient: gradient!.toGradient())
         : PrettyQrBrush.solid(resolvedColor.toARGB32());
 
-    final dataShape = _buildShape(dataModuleShape, brush, dataModuleRoundFactor,
-        eyeShapeDensity, eyeShapeRounding, eyeShapeUnifiedFinder);
+    final dataShape = _buildShape(
+      dataModuleShape,
+      brush,
+      dataModuleRoundFactor,
+      eyeShapeDensity,
+      eyeShapeRounding,
+      eyeShapeUnifiedFinder,
+    );
 
     PrettyQrShape shape;
     if (eyeShape == dataModuleShape) {
       shape = dataShape;
     } else {
-      final eyeShapeObj = _buildShape(eyeShape, brush, dataModuleRoundFactor,
-          eyeShapeDensity, eyeShapeRounding, eyeShapeUnifiedFinder);
-      // ignore: experimental_member_use - PrettyQrShape.custom
-      shape = PrettyQrShape.custom(
-        dataShape,
-        finderPattern: eyeShapeObj,
+      final eyeShapeObj = _buildShape(
+        eyeShape,
+        brush,
+        dataModuleRoundFactor,
+        eyeShapeDensity,
+        eyeShapeRounding,
+        eyeShapeUnifiedFinder,
       );
+      // ignore: experimental_member_use - PrettyQrShape.custom
+      shape = PrettyQrShape.custom(dataShape, finderPattern: eyeShapeObj);
     }
 
     return PrettyQrDecoration(
@@ -265,19 +272,19 @@ class QrAppearance {
 
   @override
   int get hashCode => Object.hash(
-        primaryColor,
-        backgroundColor,
-        eyeShape,
-        dataModuleShape,
-        dataModuleRoundFactor,
-        eyeShapeDensity,
-        eyeShapeRounding,
-        eyeShapeUnifiedFinder,
-        quietZoneModules,
-        gradient,
-        centerLogoEnabled,
-        imagePosition,
-      );
+    primaryColor,
+    backgroundColor,
+    eyeShape,
+    dataModuleShape,
+    dataModuleRoundFactor,
+    eyeShapeDensity,
+    eyeShapeRounding,
+    eyeShapeUnifiedFinder,
+    quietZoneModules,
+    gradient,
+    centerLogoEnabled,
+    imagePosition,
+  );
 }
 
 enum QrShapeType {
@@ -319,10 +326,10 @@ class QrGradientConfig {
   }
 
   Map<String, dynamic> toJson() => {
-        'startColor': startColor,
-        'endColor': endColor,
-        'type': type.toJson(),
-      };
+    'startColor': startColor,
+    'endColor': endColor,
+    'type': type.toJson(),
+  };
 
   Gradient toGradient() {
     final start = Color(startColor);

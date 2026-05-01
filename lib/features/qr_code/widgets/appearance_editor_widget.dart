@@ -63,13 +63,13 @@ class AppearanceEditorWidget extends StatelessWidget {
     final bgColor = resolver != null
         ? resolver!.resolveBackgroundColor(config.backgroundColor)
         : (config.backgroundColor != null
-            ? Color(config.backgroundColor!)
-            : themeDefaultCardBg);
+              ? Color(config.backgroundColor!)
+              : themeDefaultCardBg);
     final textColor = resolver != null
         ? resolver!.resolveTextColor(config.textColor)
         : (config.textColor != null
-            ? Color(config.textColor!)
-            : themeOnSurface);
+              ? Color(config.textColor!)
+              : themeOnSurface);
     final sampleData = sampleVCardData ?? _defaultSampleVCard;
 
     return Column(
@@ -87,8 +87,10 @@ class AppearanceEditorWidget extends StatelessWidget {
               final maxHeight = 260.0;
 
               if (isLandscape) {
-                final qrSize = (maxHeight - 2 * _previewBorder)
-                    .clamp(0.0, (maxWidth - 2 * _previewBorder - 15) / 2);
+                final qrSize = (maxHeight - 2 * _previewBorder).clamp(
+                  0.0,
+                  (maxWidth - 2 * _previewBorder - 15) / 2,
+                );
                 final dataMinWidth = 100.0;
                 final requiredWidth =
                     qrSize + 15 + dataMinWidth + 2 * _previewBorder;
@@ -118,9 +120,10 @@ class AppearanceEditorWidget extends StatelessWidget {
                             size: qrSize - 2 * _previewBorder,
                             backgroundColor: bgColor,
                             border: _previewBorder,
-                            primaryColorOverride: resolver?.resolveQrPrimaryColor(
-                              config.qrAppearance.primaryColor,
-                            ),
+                            primaryColorOverride: resolver
+                                ?.resolveQrPrimaryColor(
+                                  config.qrAppearance.primaryColor,
+                                ),
                           ),
                         ),
                         const SizedBox(width: 15),
@@ -156,8 +159,10 @@ class AppearanceEditorWidget extends StatelessWidget {
                 );
               }
 
-              final qrSize = (maxWidth - 2 * _previewBorder)
-                  .clamp(0.0, maxHeight - 2 * _previewBorder - 50);
+              final qrSize = (maxWidth - 2 * _previewBorder).clamp(
+                0.0,
+                maxHeight - 2 * _previewBorder - 50,
+              );
               final requiredWidth = qrSize + 2 * _previewBorder;
               final containerWidth = requiredWidth.clamp(0.0, maxWidth);
 
@@ -234,8 +239,7 @@ class AppearanceEditorWidget extends StatelessWidget {
     final themeOnSurface = colorScheme.onSurface;
     final effectiveBgDefault =
         resolver?.defaultBackgroundColor ?? themeDefaultCardBg;
-    final effectiveTextDefault =
-        resolver?.defaultTextColor ?? themeOnSurface;
+    final effectiveTextDefault = resolver?.defaultTextColor ?? themeOnSurface;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,8 +290,8 @@ class AppearanceEditorWidget extends StatelessWidget {
     final effectiveQrDefault = resolver != null
         ? resolver!.resolveQrPrimaryColor(config.qrAppearance.primaryColor)
         : (config.qrAppearance.primaryColor != null
-            ? Color(config.qrAppearance.primaryColor!)
-            : themeOnSurface);
+              ? Color(config.qrAppearance.primaryColor!)
+              : themeOnSurface);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,41 +309,60 @@ class AppearanceEditorWidget extends StatelessWidget {
           config.qrAppearance.primaryColor,
           effectiveQrDefault,
           effectiveQrDefault,
-          (value) => onChanged(config.copyWith(
-            qrAppearance: config.qrAppearance.copyWith(
-              primaryColor: value,
-              gradient: null,
+          (value) => onChanged(
+            config.copyWith(
+              qrAppearance: config.qrAppearance.copyWith(
+                primaryColor: value,
+                gradient: null,
+              ),
             ),
-          )),
+          ),
           allowNone: true,
         ),
         const SizedBox(height: 16),
         // 2. Background
         SwitchListTile(
-          title: Text(loc.background, style: TextStyle(fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.onSurface)),
+          title: Text(
+            loc.background,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
           subtitle: Text(loc.backgroundSubtitle),
           value: config.qrAppearance.backgroundColor != null,
           onChanged: (v) {
-            onChanged(config.copyWith(
-              qrAppearance: config.qrAppearance.copyWith(
-                backgroundColor: v
-                    ? (effectiveQrDefault.toARGB32() & 0x00FFFFFF | 0x10000000)
-                    : null,
+            onChanged(
+              config.copyWith(
+                qrAppearance: config.qrAppearance.copyWith(
+                  backgroundColor: v
+                      ? (effectiveQrDefault.toARGB32() & 0x00FFFFFF |
+                            0x10000000)
+                      : null,
+                ),
               ),
-            ));
+            );
           },
         ),
         // 3. Quiet zone
         SwitchListTile(
-          title: Text(loc.quietZone, style: TextStyle(fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.onSurface)),
+          title: Text(
+            loc.quietZone,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
           subtitle: Text(loc.quietZoneSubtitle),
           value: config.qrAppearance.quietZoneModules > 0,
           onChanged: (v) {
-            onChanged(config.copyWith(
-              qrAppearance: config.qrAppearance.copyWith(
-                quietZoneModules: v ? 4.0 : 0,
+            onChanged(
+              config.copyWith(
+                qrAppearance: config.qrAppearance.copyWith(
+                  quietZoneModules: v ? 4.0 : 0,
+                ),
               ),
-            ));
+            );
           },
         ),
         const SizedBox(height: 12),
@@ -356,21 +379,35 @@ class AppearanceEditorWidget extends StatelessWidget {
             ),
             decoration: InputDecoration(
               labelText: loc.style,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 0,
+                vertical: 12,
+              ),
             ),
             items: [
-              DropdownMenuItem(value: QrShapeType.smooth, child: Text(loc.qrShapeSmooth)),
-              DropdownMenuItem(value: QrShapeType.squares, child: Text(loc.qrShapeSquares)),
-              DropdownMenuItem(value: QrShapeType.dots, child: Text(loc.qrShapeDots)),
+              DropdownMenuItem(
+                value: QrShapeType.smooth,
+                child: Text(loc.qrShapeSmooth),
+              ),
+              DropdownMenuItem(
+                value: QrShapeType.squares,
+                child: Text(loc.qrShapeSquares),
+              ),
+              DropdownMenuItem(
+                value: QrShapeType.dots,
+                child: Text(loc.qrShapeDots),
+              ),
             ],
             onChanged: (s) {
               if (s != null) {
-                onChanged(config.copyWith(
-                  qrAppearance: config.qrAppearance.copyWith(
-                    dataModuleShape: s,
-                    eyeShape: s,
+                onChanged(
+                  config.copyWith(
+                    qrAppearance: config.qrAppearance.copyWith(
+                      dataModuleShape: s,
+                      eyeShape: s,
+                    ),
                   ),
-                ));
+                );
               }
             },
           ),
@@ -379,7 +416,13 @@ class AppearanceEditorWidget extends StatelessWidget {
         // 5. Rounded corners (when supported)
         if (config.qrAppearance.dataModuleShape != QrShapeType.dots)
           SwitchListTile(
-            title: Text(loc.roundedCorners, style: TextStyle(fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.onSurface)),
+            title: Text(
+              loc.roundedCorners,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
             subtitle: Text(loc.roundedCornersSubtitle),
             value: config.qrAppearance.dataModuleShape == QrShapeType.smooth
                 ? config.qrAppearance.dataModuleRoundFactor > 0
@@ -401,12 +444,14 @@ class AppearanceEditorWidget extends StatelessWidget {
             config.qrLogo,
             loc.qrCenterImage,
             AppearanceImageKind.qrLogo,
-            (bytes) => onChanged(config.copyWith(
-              qrLogo: bytes,
-              qrAppearance: config.qrAppearance.copyWith(
-                centerLogoEnabled: bytes != null,
+            (bytes) => onChanged(
+              config.copyWith(
+                qrLogo: bytes,
+                qrAppearance: config.qrAppearance.copyWith(
+                  centerLogoEnabled: bytes != null,
+                ),
               ),
-            )),
+            ),
           ),
         ],
         // Position of image (only when image selected)
@@ -419,12 +464,16 @@ class AppearanceEditorWidget extends StatelessWidget {
               initialValue: config.qrAppearance.imagePosition,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
-                fontSize: Theme.of(context).textTheme.titleMedium?.fontSize ?? 16,
+                fontSize:
+                    Theme.of(context).textTheme.titleMedium?.fontSize ?? 16,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
               decoration: InputDecoration(
                 labelText: loc.logoPosition,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 0,
+                  vertical: 12,
+                ),
               ),
               items: [
                 DropdownMenuItem(
@@ -442,9 +491,13 @@ class AppearanceEditorWidget extends StatelessWidget {
               ],
               onChanged: (p) {
                 if (p != null) {
-                  onChanged(config.copyWith(
-                    qrAppearance: config.qrAppearance.copyWith(imagePosition: p),
-                  ));
+                  onChanged(
+                    config.copyWith(
+                      qrAppearance: config.qrAppearance.copyWith(
+                        imagePosition: p,
+                      ),
+                    ),
+                  );
                 }
               },
             ),
@@ -455,7 +508,11 @@ class AppearanceEditorWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildFieldsColumn(BuildContext context, AppLocalizations loc, {required bool includePreview}) {
+  Widget _buildFieldsColumn(
+    BuildContext context,
+    AppLocalizations loc, {
+    required bool includePreview,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -486,9 +543,7 @@ class AppearanceEditorWidget extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: size.width * 0.5),
             child: SingleChildScrollView(
               padding: padding,
-              child: Center(
-                child: _buildPreviewSection(context, loc),
-              ),
+              child: Center(child: _buildPreviewSection(context, loc)),
             ),
           ),
           Expanded(
@@ -562,9 +617,10 @@ class AppearanceEditorWidget extends StatelessWidget {
         ? Color(currentValue)
         : effectiveDefault;
 
-    final textStyle = (Theme.of(context).textTheme.titleMedium ??
-            const TextStyle(fontSize: 16))
-        .copyWith(fontWeight: FontWeight.normal);
+    final textStyle =
+        (Theme.of(context).textTheme.titleMedium ??
+                const TextStyle(fontSize: 16))
+            .copyWith(fontWeight: FontWeight.normal);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -665,8 +721,9 @@ class _ImagePickerButtonState extends State<_ImagePickerButton> {
     setState(() => _isPicking = true);
     try {
       final picker = ImagePicker();
-      final maxEdge =
-          AppearanceImageNormalizer.maxEdgeFor(widget.imageKind).toDouble();
+      final maxEdge = AppearanceImageNormalizer.maxEdgeFor(
+        widget.imageKind,
+      ).toDouble();
       final xFile = await picker.pickImage(
         source: ImageSource.gallery,
         maxWidth: maxEdge,
@@ -675,18 +732,21 @@ class _ImagePickerButtonState extends State<_ImagePickerButton> {
       );
       if (xFile != null) {
         final bytes = await xFile.readAsBytes();
-        final result =
-            AppearanceImageNormalizer.normalize(bytes, widget.imageKind);
+        final result = AppearanceImageNormalizer.normalize(
+          bytes,
+          widget.imageKind,
+        );
         if (!mounted) return;
         if (result.isSuccess) {
           widget.onPicked(result.bytes);
         } else {
-          final msg = result.error == AppearanceImageNormalizeError.inputTooLarge
+          final msg =
+              result.error == AppearanceImageNormalizeError.inputTooLarge
               ? widget.messageInputTooLarge
               : widget.messageDecodeFailed;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(msg)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg)));
         }
       }
     } finally {
@@ -705,8 +765,9 @@ class _ImagePickerButtonState extends State<_ImagePickerButton> {
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest,
               backgroundImage: widget.currentBytes != null
                   ? MemoryImage(widget.currentBytes!)
                   : null,
@@ -718,7 +779,9 @@ class _ImagePickerButtonState extends State<_ImagePickerButton> {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surface.withValues(alpha: 0.7),
                     shape: BoxShape.circle,
                   ),
                   child: const Center(

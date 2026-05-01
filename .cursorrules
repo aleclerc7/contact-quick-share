@@ -1,21 +1,8 @@
-This project MUST follow strict MVVM architecture with Riverpod.
-- OOP (Object-Oriented Programming)
-- KISS (Keep It Simple, Stupid)
-- MVVM
+# Cursor project rules
 
-Always put:
-- data classes → models/
-- data access → repositories/
-- state & logic → providers/ (use Notifier / AsyncNotifier)
-- UI → screens/ + widgets/
+- **Always on:** `.cursor/rules/01-ai-instructions.mdc`, `.cursor/rules/02-architecture.mdc` (`alwaysApply: true`).
+- **When editing `lib/**/*.dart`:** `.cursor/rules/03-product-docs-pointer.mdc` reminds you to attach `docs/prd.md` / `docs/plan.md` when needed.
 
-Feature-first structure: features/<feature>/providers | screens | widgets | models | repositories
+Product requirements and roadmap stay in **`docs/prd.md`** and **`docs/plan.md`** (not duplicated into every chat). Use `@docs/prd.md` / `@docs/plan.md` for full text in a thread.
 
-Use ConsumerWidget / HookConsumerWidget for screens.
-Never use setState or ChangeNotifier in new code.
-Prefer riverpod_generator when possible.
-Follow clean naming: business_card_detail_notifier.dart, not bloc/cubit.
-
-When in doubt → read docs/architecture.md and docs/ai-instructions.md
-
-See docs/ai-instructions.md for important rules (localization, etc).
+Legacy links to `docs/ai-instructions.md` and `docs/architecture.md` redirect to the `.mdc` rules above.

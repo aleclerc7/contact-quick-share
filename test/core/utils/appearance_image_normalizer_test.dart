@@ -59,7 +59,14 @@ void main() {
 
     test('returns original bytes for GIF signature (pass-through)', () {
       final raw = Uint8List.fromList([
-        0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x00, 0x01,
+        0x47,
+        0x49,
+        0x46,
+        0x38,
+        0x39,
+        0x61,
+        0x00,
+        0x01,
       ]);
 
       final r = AppearanceImageNormalizer.normalize(

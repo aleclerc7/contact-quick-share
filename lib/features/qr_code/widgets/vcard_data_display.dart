@@ -12,26 +12,37 @@ import '../../../l10n/app_localizations.dart';
 
 /// Displays Tier 3 vCard data: birthday, nickname, phones, emails, URLs, social, note.
 /// Used in the expandable section under the QR code.
+/// [summaryDisplayName] is the same string shown above the fold; nickname is omitted when
+/// it only repeats that name. Phones/emails skip the first entry (already shown as primary).
 class VcardDataDisplay extends StatelessWidget {
   const VcardDataDisplay({
     super.key,
     required this.contact,
     required this.textColor,
+    required this.summaryDisplayName,
   });
 
   final Contact contact;
   final Color textColor;
+  final String summaryDisplayName;
 
-  /// True if contact has data beyond Tier 1+2 (name, org, primary phone, primary email).
-  static bool hasExpandableData(Contact contact) {
-    final hasBday = contact.events
-        .any((e) => e.label.label == EventLabel.birthday);
-    final hasNickname = (contact.name?.nickname ?? '').trim().isNotEmpty;
+  /// True if there is at least one extra row after hiding what the QR summary already shows.
+  static bool hasExpandableData(
+    Contact contact, {
+    required String summaryDisplayName,
+  }) {
+    final summaryName = summaryDisplayName.trim();
+    final hasBday = contact.events.any(
+      (e) => e.label.label == EventLabel.birthday,
+    );
+    final nn = (contact.name?.nickname ?? '').trim();
+    final hasNickname = nn.isNotEmpty && nn != summaryName;
     final hasMultiplePhones = contact.phones.length > 1;
     final hasMultipleEmails = contact.emails.length > 1;
     final hasWebsites = contact.websites.isNotEmpty;
     final hasSocial = contact.socialMedias.isNotEmpty;
-    final hasNote = contact.notes.isNotEmpty &&
+    final hasNote =
+        contact.notes.isNotEmpty &&
         (contact.notes.first.note).trim().isNotEmpty;
     return hasBday ||
         hasNickname ||
@@ -55,28 +66,37 @@ class VcardDataDisplay extends StatelessWidget {
         .where((e) => e.label.label == EventLabel.birthday)
         .firstOrNull;
     if (bday != null) {
-      sections.add(_buildSection(
-        'Birthday',
-        _formatBirthday(bday),
-      ));
+      sections.add(_buildSection('Birthday', _formatBirthday(bday)));
     }
 
     final nickname = contact.name?.nickname?.trim();
-    if (nickname != null && nickname.isNotEmpty) {
+    if (nickname != null &&
+        nickname.isNotEmpty &&
+        nickname != summaryDisplayName.trim()) {
       sections.add(_buildSection('Nickname', nickname));
     }
 
-    if (contact.phones.isNotEmpty) {
-      final items = contact.phones.map((p) {
-        final label = VcardLabelOptions.phoneDisplayName(p.label.label, loc, p.label.customLabel);
+    final extraPhones = contact.phones.skip(1).toList();
+    if (extraPhones.isNotEmpty) {
+      final items = extraPhones.map((p) {
+        final label = VcardLabelOptions.phoneDisplayName(
+          p.label.label,
+          loc,
+          p.label.customLabel,
+        );
         return '$label: ${p.number}';
       }).toList();
       sections.add(_buildSection('Phone numbers', items.join('\n')));
     }
 
-    if (contact.emails.isNotEmpty) {
-      final items = contact.emails.map((e) {
-        final label = VcardLabelOptions.emailDisplayName(e.label.label, loc, e.label.customLabel);
+    final extraEmails = contact.emails.skip(1).toList();
+    if (extraEmails.isNotEmpty) {
+      final items = extraEmails.map((e) {
+        final label = VcardLabelOptions.emailDisplayName(
+          e.label.label,
+          loc,
+          e.label.customLabel,
+        );
         return '$label: ${e.address}';
       }).toList();
       sections.add(_buildSection('Email addresses', items.join('\n')));
@@ -89,10 +109,17 @@ class VcardDataDisplay extends StatelessWidget {
 
     if (contact.socialMedias.isNotEmpty) {
       final items = contact.socialMedias.map((s) {
-        final (platform, customLabel) = SocialPlatformResolver.resolveForRead(s, loc);
+        final (platform, customLabel) = SocialPlatformResolver.resolveForRead(
+          s,
+          loc,
+        );
         final label = platform != null
             ? SocialPlatformResolver.displayName(platform)
-            : VcardLabelOptions.socialDisplayName(s.label.label, loc, s.label.customLabel);
+            : VcardLabelOptions.socialDisplayName(
+                s.label.label,
+                loc,
+                s.label.customLabel,
+              );
         return '$label: ${s.username}';
       }).toList();
       sections.add(_buildSection('Social media', items.join('\n')));
@@ -108,10 +135,11 @@ class VcardDataDisplay extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: sections
-          .expand((s) => [s, const SizedBox(height: _sectionSpacing)])
-          .toList()
-        ..removeLast(),
+      children:
+          sections
+              .expand((s) => [s, const SizedBox(height: _sectionSpacing)])
+              .toList()
+            ..removeLast(),
     );
   }
 
@@ -147,5 +175,4 @@ class VcardDataDisplay extends StatelessWidget {
         ? DateFormat.yMMMd(locale).format(date)
         : DateFormat.MMMd(locale).format(date);
   }
-
 }

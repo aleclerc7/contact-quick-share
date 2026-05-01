@@ -19,11 +19,9 @@ class DatabaseManager {
   Future<Database> openDb() async {
     if (_db != null) return _db!;
 
-    final dbPath = _databasePath ??
-        p.join(
-          (await getApplicationDocumentsDirectory()).path,
-          'cards.db',
-        );
+    final dbPath =
+        _databasePath ??
+        p.join((await getApplicationDocumentsDirectory()).path, 'cards.db');
 
     _db = await openDatabase(
       dbPath,

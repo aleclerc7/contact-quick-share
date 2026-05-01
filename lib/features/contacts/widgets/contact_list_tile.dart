@@ -17,11 +17,13 @@ class ContactListTile extends StatelessWidget {
     required this.contact,
     required this.onTap,
     this.searchHit,
+    this.onLongPress,
   });
 
   final Contact contact;
   final VoidCallback onTap;
   final SearchHit? searchHit;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,8 @@ class ContactListTile extends StatelessWidget {
     final thumbnail = contact.photo?.thumbnail;
     final displayName = contact.displayName ?? '(No name)';
 
-    final isHitInName = searchHit != null && searchHit!.displayText == displayName;
+    final isHitInName =
+        searchHit != null && searchHit!.displayText == displayName;
 
     Widget titleWidget;
     if (isHitInName) {
@@ -65,6 +68,7 @@ class ContactListTile extends StatelessWidget {
       title: titleWidget,
       subtitle: subtitleWidget,
       onTap: onTap,
+      onLongPress: onLongPress,
     );
   }
 }

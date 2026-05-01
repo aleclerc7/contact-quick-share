@@ -43,10 +43,10 @@ The experience is deliberately “one- or two-tap fast” — ideal for networki
 
 #### 4.2 Business Cards
 
-- Create: Manual entry or “Link to device contact” (one-way sync toggle).
+- Create: **Manual entry**; or **start from a device contact** (one-time **copy** of the fields the editor supports into a new card — a snapshot; **not** a live link to the address book. Editing the contact later does **not** change the card).
+- **Optional “linked to contact” mode** (separate from copy-from-contact): A card *may* be linked to a device contact for one-way sync (user-toggle). When enabled: auto-refresh from that contact on open/generate (user can disable if they edit manually). This is **not** implied by “create from contact” copy.
 - Edit flow: Tap card → full-screen QR → **tap anywhere** to open the action menu (share, view data as text, edit), or **swipe right-to-left** to go straight to edit → adjust fields/toggles/appearance → save → return to QR view.
 - Per-card customization: Background color/text color, display photo/logo (not in QR), separate QR center logo.
-- Linked cards: Auto-refresh from device contact on open/generate (user can disable if they edit manually).
 - Full management: reorder, delete, duplicate.
 
 #### 4.3 Device Contact Sharing
@@ -130,7 +130,8 @@ Folder structure follows **feature-first** organization:
 
 - As a user I want to open the app and immediately see my most-used business card QR (auto-open).
 - As a user I want to tap any contact and share only selected fields in <5 seconds.
-- As a user I want my linked business card to stay up-to-date when the device contact changes.
+- As a user I want to start a new business card from an existing contact and **edit it like any other card** (copied data, not tied to the address book).
+- As a user I want a **linked** business card (when that mode is on) to stay up-to-date when the device contact changes.
 - As a user I want beautiful, branded QR codes with my logo and colors.
 
 ### 8\. Scope
@@ -138,7 +139,7 @@ Folder structure follows **feature-first** organization:
 **MVP (v1.0 – 4–6 weeks solo dev)**
 
 - Main screen + search
-- Business cards (manual + linked)
+- Business cards (manual, copy from contact, optional linked sync)
 - Device contact field selection
 - QR generation & customization
 - Local SQLite storage for business cards

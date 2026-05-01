@@ -22,15 +22,17 @@ class QrDecorationFactory {
     QrDisplayPayload payload,
     DefaultAppearanceResolver resolver,
   ) {
-    final bgForContrast =
-        resolver.resolveBackgroundColor(payload.backgroundColor);
+    final bgForContrast = resolver.resolveBackgroundColor(
+      payload.backgroundColor,
+    );
     return payload.qrAppearance.toPrettyQrDecoration(
       centerImage: payload.centerLogo != null
           ? MemoryImage(payload.centerLogo!)
           : null,
       backgroundForContrast: bgForContrast,
-      primaryColorOverride:
-          resolver.resolveQrPrimaryColor(payload.qrAppearance.primaryColor),
+      primaryColorOverride: resolver.resolveQrPrimaryColor(
+        payload.qrAppearance.primaryColor,
+      ),
     );
   }
 
@@ -41,13 +43,15 @@ class QrDecorationFactory {
     SimpleQrPayload payload,
     DefaultAppearanceResolver resolver,
   ) {
-    final bgForContrast =
-        resolver.resolveBackgroundColor(payload.backgroundColor);
+    final bgForContrast = resolver.resolveBackgroundColor(
+      payload.backgroundColor,
+    );
     return forAppearance(
       payload.qrAppearance,
       backgroundForContrast: bgForContrast,
-      primaryColorOverride:
-          resolver.resolveQrPrimaryColor(payload.qrAppearance.primaryColor),
+      primaryColorOverride: resolver.resolveQrPrimaryColor(
+        payload.qrAppearance.primaryColor,
+      ),
       centerImage: payload.centerLogo,
     );
   }

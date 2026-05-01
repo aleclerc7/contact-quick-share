@@ -16,8 +16,8 @@ class BackupRepository {
   BackupRepository({
     required SettingsRepository settingsRepository,
     required BusinessCardRepository businessCardRepository,
-  })  : _settingsRepository = settingsRepository,
-        _businessCardRepository = businessCardRepository;
+  }) : _settingsRepository = settingsRepository,
+       _businessCardRepository = businessCardRepository;
 
   final SettingsRepository _settingsRepository;
   final BusinessCardRepository _businessCardRepository;

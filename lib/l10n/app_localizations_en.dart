@@ -40,6 +40,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newBusinessCardTooltip => 'New Business Card';
 
   @override
+  String get addBusinessCardSheetTitle => 'New business card';
+
+  @override
+  String get addBusinessCardStartBlank => 'Start blank';
+
+  @override
+  String get addBusinessCardFromContact => 'From a contact';
+
+  @override
+  String get addBusinessCardFromExistingCard => 'From another business card';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Choose a business card';
+
+  @override
+  String get copyBusinessCardFromThisAction => 'Copy this business card';
+
+  @override
+  String get businessCardNameCopySuffix => ' (copy)';
+
+  @override
+  String get noMatchingBusinessCards => 'No matching business cards';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Choose a contact';
+
+  @override
+  String get createCardFromContactAction => 'Create business card from contact';
+
+  @override
+  String get importFromContactsNeedPermissionTitle => 'Contacts access needed';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'To create a business card from a contact, allow access to your contacts.';
+
+  @override
+  String get importFromContactsTryAgain => 'Try again';
+
+  @override
+  String get noContactsOnDevice => 'No contacts on this device';
+
+  @override
   String get searchHint => 'Search cards or contacts…';
 
   @override

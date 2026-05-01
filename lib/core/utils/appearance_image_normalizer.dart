@@ -7,10 +7,7 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as img;
 
 /// Which appearance slot the bytes belong to (determines max raster edge).
-enum AppearanceImageKind {
-  cardPhoto,
-  qrLogo,
-}
+enum AppearanceImageKind { cardPhoto, qrLogo }
 
 /// Why normalization did not return processed raster bytes.
 enum AppearanceImageNormalizeError {
@@ -25,8 +22,9 @@ enum AppearanceImageNormalizeError {
 final class AppearanceImageNormalizeResult {
   const AppearanceImageNormalizeResult.ok(Uint8List this.bytes) : error = null;
 
-  const AppearanceImageNormalizeResult.failure(AppearanceImageNormalizeError this.error)
-      : bytes = null;
+  const AppearanceImageNormalizeResult.failure(
+    AppearanceImageNormalizeError this.error,
+  ) : bytes = null;
 
   final Uint8List? bytes;
   final AppearanceImageNormalizeError? error;
@@ -47,9 +45,9 @@ class AppearanceImageNormalizer {
   static const int _jpegQuality = 85;
 
   static int maxEdgeFor(AppearanceImageKind kind) => switch (kind) {
-        AppearanceImageKind.cardPhoto => _maxEdgeCard,
-        AppearanceImageKind.qrLogo => _maxEdgeQrLogo,
-      };
+    AppearanceImageKind.cardPhoto => _maxEdgeCard,
+    AppearanceImageKind.qrLogo => _maxEdgeQrLogo,
+  };
 
   /// Normalizes [bytes] for the given [kind].
   ///
@@ -110,9 +108,7 @@ class AppearanceImageNormalizer {
     if (processed.hasAlpha) {
       out = Uint8List.fromList(img.encodePng(processed));
     } else {
-      out = Uint8List.fromList(
-        img.encodeJpg(processed, quality: _jpegQuality),
-      );
+      out = Uint8List.fromList(img.encodeJpg(processed, quality: _jpegQuality));
     }
     return AppearanceImageNormalizeResult.ok(out);
   }

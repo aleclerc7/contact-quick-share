@@ -20,15 +20,14 @@ class DefaultShareFieldsScreen extends ConsumerWidget {
     final asyncSettings = ref.watch(settingsNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.defaultShareFields),
-      ),
+      appBar: AppBar(title: Text(loc.defaultShareFields)),
       body: asyncSettings.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(loc.errorGeneric(e.toString()))),
         data: (settings) {
           final selection =
-              settings.defaultShareFields ?? ContactFieldSelection.defaultSelection();
+              settings.defaultShareFields ??
+              ContactFieldSelection.defaultSelection();
           return SafeArea(
             top: false,
             child: ListView(
@@ -40,23 +39,35 @@ class DefaultShareFieldsScreen extends ConsumerWidget {
                 SwitchListTile(
                   title: Text(loc.fieldName),
                   value: selection.name,
-                  onChanged: (v) => _update(ref, settings, selection.copyWith(name: v)),
+                  onChanged: (v) =>
+                      _update(ref, settings, selection.copyWith(name: v)),
+                ),
+                SwitchListTile(
+                  title: Text(loc.nickname),
+                  value: selection.nickname,
+                  onChanged: (v) =>
+                      _update(ref, settings, selection.copyWith(nickname: v)),
                 ),
                 SwitchListTile(
                   title: Text(loc.fieldPhones),
                   value: selection.phones,
-                  onChanged: (v) => _update(ref, settings, selection.copyWith(phones: v)),
+                  onChanged: (v) =>
+                      _update(ref, settings, selection.copyWith(phones: v)),
                 ),
                 SwitchListTile(
                   title: const Text('Emails'),
                   value: selection.emails,
-                  onChanged: (v) => _update(ref, settings, selection.copyWith(emails: v)),
+                  onChanged: (v) =>
+                      _update(ref, settings, selection.copyWith(emails: v)),
                 ),
                 SwitchListTile(
                   title: Text(loc.fieldOrganization),
                   value: selection.organizations,
-                  onChanged: (v) =>
-                      _update(ref, settings, selection.copyWith(organizations: v)),
+                  onChanged: (v) => _update(
+                    ref,
+                    settings,
+                    selection.copyWith(organizations: v),
+                  ),
                 ),
                 SwitchListTile(
                   title: const Text('Addresses'),
@@ -73,8 +84,11 @@ class DefaultShareFieldsScreen extends ConsumerWidget {
                 SwitchListTile(
                   title: const Text('Social media'),
                   value: selection.socialMedias,
-                  onChanged: (v) =>
-                      _update(ref, settings, selection.copyWith(socialMedias: v)),
+                  onChanged: (v) => _update(
+                    ref,
+                    settings,
+                    selection.copyWith(socialMedias: v),
+                  ),
                 ),
                 SwitchListTile(
                   title: Text(loc.fieldNotes),
@@ -90,9 +104,13 @@ class DefaultShareFieldsScreen extends ConsumerWidget {
     );
   }
 
-  void _update(WidgetRef ref, AppSettings settings, ContactFieldSelection selection) {
-    ref.read(settingsNotifierProvider.notifier).updateSettings(
-          settings.copyWith(defaultShareFields: selection),
-        );
+  void _update(
+    WidgetRef ref,
+    AppSettings settings,
+    ContactFieldSelection selection,
+  ) {
+    ref
+        .read(settingsNotifierProvider.notifier)
+        .updateSettings(settings.copyWith(defaultShareFields: selection));
   }
 }

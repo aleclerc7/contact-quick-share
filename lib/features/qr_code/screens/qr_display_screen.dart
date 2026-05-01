@@ -22,12 +22,14 @@ class QrDisplayScreen extends StatefulWidget {
 
   final QrDisplayPayload payload;
   final DefaultAppearanceResolver resolver;
+
   /// When provided, tap to flip shows edit content.
   /// Call [onDone] to flip back; pass [QrDisplayPayload] to update the displayed QR.
   final Widget Function(
     BuildContext context,
     void Function([QrDisplayPayload? updatedPayload]) onDone,
-  )? editContentBuilder;
+  )?
+  editContentBuilder;
   final VoidCallback? onClose;
 
   @override
@@ -65,8 +67,9 @@ class _QrDisplayScreenState extends State<QrDisplayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        widget.resolver.resolveBackgroundColor(_payload.backgroundColor);
+    final backgroundColor = widget.resolver.resolveBackgroundColor(
+      _payload.backgroundColor,
+    );
     final textColor = widget.resolver.resolveTextColor(_payload.textColor);
 
     return PopScope(
@@ -91,15 +94,13 @@ class _QrDisplayScreenState extends State<QrDisplayScreen> {
                 child: _isEditMode && widget.editContentBuilder != null
                     ? KeyedSubtree(
                         key: const ValueKey('edit'),
-                        child: widget.editContentBuilder!(
-                          context,
-                          _onDone,
-                        ),
+                        child: widget.editContentBuilder!(context, _onDone),
                       )
                     : QrDisplayView(
                         key: const ValueKey('qr'),
                         payload: _payload,
                         resolver: widget.resolver,
+                        expansionScopeId: 'qr_display_screen',
                       ),
               ),
             ),

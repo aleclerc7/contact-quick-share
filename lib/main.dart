@@ -22,9 +22,5 @@ void main() async {
   });
 
   await bootstrap();
-  runApp(
-    const ProviderScope(
-      child: ContactQuickShareApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: ContactQuickShareApp()));
 }

@@ -19,8 +19,10 @@ class AppSocialPlatform {
 
   final String id;
   final SocialMediaLabel? contactLabel;
+
   /// Display-only label for dropdown/UI. Storage and matching use [id].
   final String displayLabel;
+
   /// Full URL template with a `{username}` placeholder (without a leading `@`).
   /// User input is normalized by stripping leading `@` before substitution; templates
   /// that need `@` in the path use `@{username}` (e.g. TikTok, YouTube, Mastodon).
@@ -158,13 +160,17 @@ class SocialPlatformResolver {
   /// Returns (platform, customLabel). If platform != null, use it for dropdown.
   /// If platform == null, customLabel is the display string for custom entry.
   /// [loc] is optional; when provided, Other/Custom are translated.
-  static (AppSocialPlatform?, String?) resolveForRead(SocialMedia s, [AppLocalizations? loc]) {
+  static (AppSocialPlatform?, String?) resolveForRead(
+    SocialMedia s, [
+    AppLocalizations? loc,
+  ]) {
     final label = s.label.label;
     final customLabel = s.label.customLabel;
 
     if (label == SocialMediaLabel.custom) {
       final raw = customLabel?.trim() ?? '';
-      if (raw.isEmpty) return (null, socialMediaLabelDisplayName(label, loc, null));
+      if (raw.isEmpty)
+        return (null, socialMediaLabelDisplayName(label, loc, null));
       final matched = _findById(raw);
       if (matched != null) return (matched, null);
       return (null, raw);
@@ -184,7 +190,9 @@ class SocialPlatformResolver {
   ]) {
     final platform = _findByContactLabel(label);
     if (platform != null) return platform.displayLabel;
-    if (label == SocialMediaLabel.custom && customLabel != null && customLabel.isNotEmpty) {
+    if (label == SocialMediaLabel.custom &&
+        customLabel != null &&
+        customLabel.isNotEmpty) {
       return customLabel;
     }
     return switch (label) {
@@ -299,5 +307,4 @@ class SocialPlatformResolver {
     final type = vCardSafeTypeToken(raw);
     return (type, username);
   }
-
 }

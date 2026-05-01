@@ -41,9 +41,7 @@ class ContactQuickShareApp extends ConsumerWidget {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         final light = useUserColorLight || useEmbeddedOnly
-            ? ColorScheme.fromSeed(
-                seedColor: Color(effectiveSeedLight),
-              )
+            ? ColorScheme.fromSeed(seedColor: Color(effectiveSeedLight))
             : (lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.blue));
         final dark = useUserColorDark || useEmbeddedOnly
             ? ColorScheme.fromSeed(
@@ -51,13 +49,12 @@ class ContactQuickShareApp extends ConsumerWidget {
                 brightness: Brightness.dark,
               )
             : (darkDynamic ??
-                ColorScheme.fromSeed(
-                  seedColor: Colors.blue,
-                  brightness: Brightness.dark,
-                ));
+                  ColorScheme.fromSeed(
+                    seedColor: Colors.blue,
+                    brightness: Brightness.dark,
+                  ));
         return MaterialApp(
-          onGenerateTitle: (context) =>
-              AppLocalizations.of(context)!.appTitle,
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(colorScheme: light, useMaterial3: true),
           darkTheme: ThemeData(colorScheme: dark, useMaterial3: true),

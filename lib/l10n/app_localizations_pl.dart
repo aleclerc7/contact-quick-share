@@ -41,6 +41,50 @@ class AppLocalizationsPl extends AppLocalizations {
   String get newBusinessCardTooltip => 'Nowa wizytówka';
 
   @override
+  String get addBusinessCardSheetTitle => 'Nowa wizytówka';
+
+  @override
+  String get addBusinessCardStartBlank => 'Pusta';
+
+  @override
+  String get addBusinessCardFromContact => 'Z kontaktu';
+
+  @override
+  String get addBusinessCardFromExistingCard => 'Z innej wizytówki';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Wybierz wizytówkę';
+
+  @override
+  String get copyBusinessCardFromThisAction => 'Skopiuj tę wizytówkę';
+
+  @override
+  String get businessCardNameCopySuffix => ' (kopia)';
+
+  @override
+  String get noMatchingBusinessCards => 'Brak pasujących wizytówek';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Wybierz kontakt';
+
+  @override
+  String get createCardFromContactAction => 'Utwórz wizytówkę z kontaktu';
+
+  @override
+  String get importFromContactsNeedPermissionTitle =>
+      'Wymagany dostęp do kontaktów';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'Aby utworzyć wizytówkę z kontaktu, zezwól na dostęp do kontaktów.';
+
+  @override
+  String get importFromContactsTryAgain => 'Spróbuj ponownie';
+
+  @override
+  String get noContactsOnDevice => 'Brak kontaktów na tym urządzeniu';
+
+  @override
   String get searchHint => 'Szukaj wizytówek lub kontaktów…';
 
   @override

@@ -19,7 +19,7 @@ import '../utils/qr_decoration_factory.dart';
 /// Used by both business cards and contact sharing flows.
 class QrShareService {
   const QrShareService({ShareService? shareService})
-      : _shareService = shareService ?? const ShareService();
+    : _shareService = shareService ?? const ShareService();
 
   final ShareService _shareService;
 
@@ -36,8 +36,7 @@ class QrShareService {
       );
       final qrImage = QrImage(qrCode);
 
-      final decoration =
-          QrDecorationFactory.forPayload(payload, resolver);
+      final decoration = QrDecorationFactory.forPayload(payload, resolver);
 
       const size = 512;
       final bytes = await qrImage.toImageAsBytes(
@@ -48,13 +47,17 @@ class QrShareService {
       if (bytes == null) return 'Failed to generate QR image.';
 
       final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/qr_contact_${DateTime.now().millisecondsSinceEpoch}.png');
+      final file = File(
+        '${tempDir.path}/qr_contact_${DateTime.now().millisecondsSinceEpoch}.png',
+      );
       await file.writeAsBytes(bytes.buffer.asUint8List());
 
       await _shareService.share(
         ShareParams(
           files: [XFile(file.path)],
-          text: payload.displayName.isNotEmpty ? payload.displayName : 'Contact',
+          text: payload.displayName.isNotEmpty
+              ? payload.displayName
+              : 'Contact',
         ),
       );
       return null;
@@ -77,8 +80,10 @@ class QrShareService {
       );
       final qrImage = QrImage(qrCode);
 
-      final decoration =
-          QrDecorationFactory.forSimplePayload(payload, resolver);
+      final decoration = QrDecorationFactory.forSimplePayload(
+        payload,
+        resolver,
+      );
 
       const size = 512;
       final bytes = await qrImage.toImageAsBytes(
@@ -94,13 +99,11 @@ class QrShareService {
       );
       await file.writeAsBytes(bytes.buffer.asUint8List());
 
-      final caption =
-          shareCaption.trim().isNotEmpty ? shareCaption.trim() : 'Link';
+      final caption = shareCaption.trim().isNotEmpty
+          ? shareCaption.trim()
+          : 'Link';
       await _shareService.share(
-        ShareParams(
-          files: [XFile(file.path)],
-          text: caption,
-        ),
+        ShareParams(files: [XFile(file.path)], text: caption),
       );
       return null;
     } catch (e) {
@@ -122,7 +125,9 @@ class QrShareService {
       await _shareService.share(
         ShareParams(
           files: [XFile(file.path)],
-          text: payload.displayName.isNotEmpty ? payload.displayName : 'Contact',
+          text: payload.displayName.isNotEmpty
+              ? payload.displayName
+              : 'Contact',
         ),
       );
       return null;

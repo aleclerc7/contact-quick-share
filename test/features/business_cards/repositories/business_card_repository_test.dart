@@ -64,9 +64,7 @@ void main() {
       name: Name(first: 'Jane', last: 'Doe'),
       phones: [Phone(number: primaryPhone)],
       emails: [Email(address: primaryEmail)],
-      organizations: [
-        Organization(name: displayOrg, jobTitle: displayTitle),
-      ],
+      organizations: [Organization(name: displayOrg, jobTitle: displayTitle)],
     );
     return BusinessCard(
       id: id,

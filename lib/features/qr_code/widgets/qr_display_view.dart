@@ -3,48 +3,60 @@
 // SPDX-License-Identifier: MPL-2.0
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 import '../../settings/services/default_appearance_resolver.dart';
 import '../models/qr_display_payload.dart';
+import '../providers/qr_display_expansion_notifier.dart';
 import '../utils/qr_decoration_factory.dart';
 import 'qr_layout_shell.dart';
 import 'vcard_data_display.dart';
 
 /// Pure presentational widget: QR code + details below.
 /// Used by both business cards and contact sharing flows.
-/// Supports progressive disclosure: tap chevron to expand/collapse additional data.
-class QrDisplayView extends StatefulWidget {
+/// Supports progressive disclosure: tap the summary text or chevron to expand/collapse
+/// additional data (when present).
+///
+/// [expansionScopeId] must be unique per concurrent instance (see [QrDisplayExpansion]).
+class QrDisplayView extends ConsumerStatefulWidget {
   const QrDisplayView({
     super.key,
     required this.payload,
     required this.resolver,
+    required this.expansionScopeId,
   });
 
   final QrDisplayPayload payload;
   final DefaultAppearanceResolver resolver;
+  final String expansionScopeId;
 
   @override
-  State<QrDisplayView> createState() => _QrDisplayViewState();
+  ConsumerState<QrDisplayView> createState() => _QrDisplayViewState();
 }
 
-class _QrDisplayViewState extends State<QrDisplayView> {
+class _QrDisplayViewState extends ConsumerState<QrDisplayView> {
   static const _border = 15.0;
   static const _photoSize = 108.0;
   static const _photoBorderRadius = 18.0;
-  bool _expanded = false;
 
   QrDisplayPayload get payload => widget.payload;
 
-  Widget _buildChevron(BuildContext context) {
+  void _toggleExpanded() {
+    ref
+        .read(qrDisplayExpansionProvider(widget.expansionScopeId).notifier)
+        .toggle();
+  }
+
+  Widget _buildChevron(BuildContext context, {required bool expanded}) {
     final textColor = widget.resolver.resolveTextColor(payload.textColor);
     return GestureDetector(
-      onTap: () => setState(() => _expanded = !_expanded),
+      onTap: _toggleExpanded,
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Icon(
-          _expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+          expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
           size: 24,
           color: textColor.withValues(alpha: 0.5),
         ),
@@ -58,10 +70,11 @@ class _QrDisplayViewState extends State<QrDisplayView> {
     BuildContext context, {
     required bool hasExpandable,
     required Color textColor,
+    required bool expanded,
   }) {
-    final isExpanded = hasExpandable && _expanded;
-    return Column(
-      mainAxisSize: isExpanded ? MainAxisSize.max : MainAxisSize.min,
+    final isExpanded = hasExpandable && expanded;
+    final summaryBlock = Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -110,7 +123,22 @@ class _QrDisplayViewState extends State<QrDisplayView> {
             maxLines: 1,
           ),
         ],
-        if (hasExpandable) _buildChevron(context),
+      ],
+    );
+
+    return Column(
+      mainAxisSize: isExpanded ? MainAxisSize.max : MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (hasExpandable)
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: _toggleExpanded,
+            child: summaryBlock,
+          )
+        else
+          summaryBlock,
+        if (hasExpandable) _buildChevron(context, expanded: expanded),
         if (isExpanded) ...[
           const SizedBox(height: 8),
           Expanded(
@@ -119,6 +147,7 @@ class _QrDisplayViewState extends State<QrDisplayView> {
               child: VcardDataDisplay(
                 contact: payload.displayContact,
                 textColor: textColor,
+                summaryDisplayName: payload.displayName,
               ),
             ),
           ),
@@ -133,11 +162,13 @@ class _QrDisplayViewState extends State<QrDisplayView> {
     BuildContext context, {
     required bool hasExpandable,
     required Color textColor,
+    required bool expanded,
   }) {
     final detailsColumn = _buildDetailsColumn(
       context,
       hasExpandable: hasExpandable,
       textColor: textColor,
+      expanded: expanded,
     );
 
     if (payload.photo == null) {
@@ -152,19 +183,9 @@ class _QrDisplayViewState extends State<QrDisplayView> {
           height: _photoSize,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(_photoBorderRadius),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.15),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           clipBehavior: Clip.antiAlias,
-          child: Image.memory(
-            payload.photo!,
-            fit: BoxFit.cover,
-          ),
+          child: Image.memory(payload.photo!, fit: BoxFit.cover),
         ),
         SizedBox(width: 2 * _border),
         Flexible(child: detailsColumn),
@@ -190,10 +211,7 @@ class _QrDisplayViewState extends State<QrDisplayView> {
               Text(
                 'Too much information to share via QR code. Try to remove some.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: textColor,
-                ),
+                style: TextStyle(fontSize: 16, color: textColor),
               ),
               const SizedBox(height: 12),
               Text(
@@ -209,6 +227,7 @@ class _QrDisplayViewState extends State<QrDisplayView> {
                 context,
                 hasExpandable: false,
                 textColor: textColor,
+                expanded: false,
               ),
             ],
           ),
@@ -227,10 +246,15 @@ class _QrDisplayViewState extends State<QrDisplayView> {
   }
 
   Widget _buildQrContent(BuildContext context) {
-    final decoration =
-        QrDecorationFactory.forPayload(payload, widget.resolver);
+    final decoration = QrDecorationFactory.forPayload(payload, widget.resolver);
     final textColor = widget.resolver.resolveTextColor(payload.textColor);
-    final hasExpandable = VcardDataDisplay.hasExpandableData(payload.displayContact);
+    final hasExpandable = VcardDataDisplay.hasExpandableData(
+      payload.displayContact,
+      summaryDisplayName: payload.displayName,
+    );
+    final expanded = ref.watch(
+      qrDisplayExpansionProvider(widget.expansionScopeId),
+    );
 
     return SafeArea(
       child: Column(
@@ -245,10 +269,11 @@ class _QrDisplayViewState extends State<QrDisplayView> {
               ),
               contentBuilder: (context, {required bool isLandscape}) =>
                   _buildDataSection(
-                context,
-                hasExpandable: hasExpandable,
-                textColor: textColor,
-              ),
+                    context,
+                    hasExpandable: hasExpandable,
+                    textColor: textColor,
+                    expanded: expanded,
+                  ),
             ),
           ),
         ],

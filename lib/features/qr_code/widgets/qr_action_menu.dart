@@ -60,8 +60,9 @@ class QrActionMenu extends StatelessWidget {
 
         return QrActionMenu(
           onShareAsImage: () => wrap(onShareAsImage),
-          onShareAsVCard:
-              onShareAsVCard == null ? null : () => wrap(onShareAsVCard),
+          onShareAsVCard: onShareAsVCard == null
+              ? null
+              : () => wrap(onShareAsVCard),
           onViewQrDataAsText: () => wrap(onViewQrDataAsText),
           trailing: wrappedTrailing,
         );
@@ -98,11 +99,7 @@ class QrActionMenu extends StatelessWidget {
               onTap: onViewQrDataAsText,
             ),
             if (tail != null)
-              _MenuItem(
-                icon: tail.icon,
-                label: tail.label,
-                onTap: tail.onTap,
-              ),
+              _MenuItem(icon: tail.icon, label: tail.label, onTap: tail.onTap),
           ],
         ),
       ),
@@ -111,11 +108,7 @@ class QrActionMenu extends StatelessWidget {
 }
 
 class _MenuItem extends StatelessWidget {
-  const _MenuItem({
-    required this.icon,
-    required this.label,
-    this.onTap,
-  });
+  const _MenuItem({required this.icon, required this.label, this.onTap});
 
   final IconData icon;
   final String label;

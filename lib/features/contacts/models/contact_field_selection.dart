@@ -14,6 +14,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 class ContactFieldSelection {
   const ContactFieldSelection({
     this.name = true,
+    this.nickname = true,
     this.phones = true,
     this.emails = true,
     this.organizations = true,
@@ -31,6 +32,9 @@ class ContactFieldSelection {
   });
 
   final bool name;
+
+  /// When [name] is true, whether to include [Name.nickname] in share / vCard.
+  final bool nickname;
   final bool phones;
   final bool emails;
   final bool organizations;
@@ -66,19 +70,21 @@ class ContactFieldSelection {
   }
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'phones': phones,
-        'emails': emails,
-        'organizations': organizations,
-        'addresses': addresses,
-        'websites': websites,
-        'socialMedias': socialMedias,
-        'notes': notes,
-      };
+    'name': name,
+    'nickname': nickname,
+    'phones': phones,
+    'emails': emails,
+    'organizations': organizations,
+    'addresses': addresses,
+    'websites': websites,
+    'socialMedias': socialMedias,
+    'notes': notes,
+  };
 
   factory ContactFieldSelection.fromJson(Map<String, dynamic> json) {
     return ContactFieldSelection(
       name: json['name'] as bool? ?? true,
+      nickname: json['nickname'] as bool? ?? true,
       phones: json['phones'] as bool? ?? true,
       emails: json['emails'] as bool? ?? true,
       organizations: json['organizations'] as bool? ?? true,
@@ -90,8 +96,10 @@ class ContactFieldSelection {
   }
 
   /// Sensible defaults: name, phones, emails, org (first-time use).
-  factory ContactFieldSelection.defaultSelection() => const ContactFieldSelection(
+  factory ContactFieldSelection.defaultSelection() =>
+      const ContactFieldSelection(
         name: true,
+        nickname: true,
         phones: true,
         emails: true,
         organizations: true,
@@ -123,8 +131,10 @@ class ContactFieldSelection {
     Contact contact,
     ContactFieldSelection defaults,
   ) {
+    final hasNickname = (contact.name?.nickname ?? '').trim().isNotEmpty;
     return ContactFieldSelection(
       name: contact.name != null && defaults.name,
+      nickname: hasNickname && defaults.nickname,
       phones: defaults.phones,
       emails: defaults.emails,
       organizations: defaults.organizations,
@@ -177,8 +187,10 @@ class ContactFieldSelection {
     ContactFieldSelection previous,
     ContactFieldSelection categoryDefaults,
   ) {
+    final hasNickname = (fresh.name?.nickname ?? '').trim().isNotEmpty;
     return ContactFieldSelection(
       name: fresh.name != null && previous.name,
+      nickname: hasNickname && previous.nickname,
       phones: categoryDefaults.phones,
       emails: categoryDefaults.emails,
       organizations: categoryDefaults.organizations,
@@ -242,6 +254,7 @@ class ContactFieldSelection {
 
   ContactFieldSelection copyWith({
     bool? name,
+    bool? nickname,
     bool? phones,
     bool? emails,
     bool? organizations,
@@ -259,6 +272,7 @@ class ContactFieldSelection {
   }) {
     return ContactFieldSelection(
       name: name ?? this.name,
+      nickname: nickname ?? this.nickname,
       phones: phones ?? this.phones,
       emails: emails ?? this.emails,
       organizations: organizations ?? this.organizations,
@@ -280,16 +294,41 @@ class ContactFieldSelection {
   /// Unselected fields are cleared (empty lists / null).
   Contact applyToContact(Contact contact) {
     return contact.copyWith(
-      name: name ? contact.name : null,
+      name: name ? _nameForShare(contact) : null,
       phones: _filterList(contact.phones, phoneItems, phones),
       emails: _filterList(contact.emails, emailItems, emails),
-      organizations:
-          _filterList(contact.organizations, organizationItems, organizations),
+      organizations: _filterList(
+        contact.organizations,
+        organizationItems,
+        organizations,
+      ),
       addresses: _filterList(contact.addresses, addressItems, addresses),
       websites: _filterList(contact.websites, websiteItems, websites),
-      socialMedias:
-          _filterList(contact.socialMedias, socialMediaItems, socialMedias),
+      socialMedias: _filterList(
+        contact.socialMedias,
+        socialMediaItems,
+        socialMedias,
+      ),
       notes: _filterList(contact.notes, noteItems, notes),
+    );
+  }
+
+  /// [Name.copyWith(nickname: null)] cannot clear nickname; build explicitly.
+  Name? _nameForShare(Contact contact) {
+    final n = contact.name;
+    if (n == null) return null;
+    if (nickname) return n;
+    return Name(
+      first: n.first,
+      middle: n.middle,
+      last: n.last,
+      prefix: n.prefix,
+      suffix: n.suffix,
+      phoneticFirst: n.phoneticFirst,
+      phoneticMiddle: n.phoneticMiddle,
+      phoneticLast: n.phoneticLast,
+      previousFamilyName: n.previousFamilyName,
+      nickname: null,
     );
   }
 
@@ -314,6 +353,7 @@ class ContactFieldSelection {
     if (identical(this, other)) return true;
     return other is ContactFieldSelection &&
         name == other.name &&
+        nickname == other.nickname &&
         phones == other.phones &&
         emails == other.emails &&
         organizations == other.organizations &&
@@ -332,20 +372,21 @@ class ContactFieldSelection {
 
   @override
   int get hashCode => Object.hash(
-        name,
-        phones,
-        emails,
-        organizations,
-        addresses,
-        websites,
-        socialMedias,
-        notes,
-        Object.hashAll(phoneItems),
-        Object.hashAll(emailItems),
-        Object.hashAll(organizationItems),
-        Object.hashAll(addressItems),
-        Object.hashAll(websiteItems),
-        Object.hashAll(socialMediaItems),
-        Object.hashAll(noteItems),
-      );
+    name,
+    nickname,
+    phones,
+    emails,
+    organizations,
+    addresses,
+    websites,
+    socialMedias,
+    notes,
+    Object.hashAll(phoneItems),
+    Object.hashAll(emailItems),
+    Object.hashAll(organizationItems),
+    Object.hashAll(addressItems),
+    Object.hashAll(websiteItems),
+    Object.hashAll(socialMediaItems),
+    Object.hashAll(noteItems),
+  );
 }

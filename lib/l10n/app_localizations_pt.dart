@@ -41,6 +41,51 @@ class AppLocalizationsPt extends AppLocalizations {
   String get newBusinessCardTooltip => 'Novo cartão de visita';
 
   @override
+  String get addBusinessCardSheetTitle => 'Novo cartão de visita';
+
+  @override
+  String get addBusinessCardStartBlank => 'Em branco';
+
+  @override
+  String get addBusinessCardFromContact => 'De um contato';
+
+  @override
+  String get addBusinessCardFromExistingCard => 'De outro cartão de visita';
+
+  @override
+  String get businessCardPickerForCopyTitle => 'Escolher um cartão de visita';
+
+  @override
+  String get copyBusinessCardFromThisAction => 'Copiar este cartão de visita';
+
+  @override
+  String get businessCardNameCopySuffix => ' (cópia)';
+
+  @override
+  String get noMatchingBusinessCards => 'Sem cartões de visita correspondentes';
+
+  @override
+  String get contactPickerForNewCardTitle => 'Escolher um contato';
+
+  @override
+  String get createCardFromContactAction =>
+      'Criar cartão de visita a partir de um contato';
+
+  @override
+  String get importFromContactsNeedPermissionTitle =>
+      'Acesso aos contatos necessário';
+
+  @override
+  String get importFromContactsNeedPermissionBody =>
+      'Para criar um cartão de visita a partir de um contato, permita o acesso aos seus contatos.';
+
+  @override
+  String get importFromContactsTryAgain => 'Tentar novamente';
+
+  @override
+  String get noContactsOnDevice => 'Nenhum contato neste dispositivo';
+
+  @override
   String get searchHint => 'Buscar cartões ou contatos…';
 
   @override

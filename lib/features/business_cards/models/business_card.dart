@@ -98,8 +98,7 @@ class BusinessCard {
 
   static String _str(String? s) => (s ?? '').trim();
   static bool _bytesEq(Uint8List? a, Uint8List? b) =>
-      (a == null && b == null) ||
-      (a != null && b != null && listEquals(a, b));
+      (a == null && b == null) || (a != null && b != null && listEquals(a, b));
 
   static bool _contactDiffers(Contact a, Contact b) {
     final an = a.name;
@@ -130,7 +129,8 @@ class BusinessCard {
     }
     if (a.socialMedias.length != b.socialMedias.length) return true;
     for (var i = 0; i < a.socialMedias.length; i++) {
-      if (_str(a.socialMedias[i].username) != _str(b.socialMedias[i].username)) {
+      if (_str(a.socialMedias[i].username) !=
+          _str(b.socialMedias[i].username)) {
         return true;
       }
     }
@@ -170,12 +170,8 @@ class BusinessCard {
     final orgName = org?.name ?? '';
     final title = org?.jobTitle ?? '';
     final subtitle = org?.departmentName ?? '';
-    final phone = contact.phones.isNotEmpty
-        ? contact.phones.first.number
-        : '';
-    final email = contact.emails.isNotEmpty
-        ? contact.emails.first.address
-        : '';
+    final phone = contact.phones.isNotEmpty ? contact.phones.first.number : '';
+    final email = contact.emails.isNotEmpty ? contact.emails.first.address : '';
 
     return copyWith(
       displayFullName: displayName,
@@ -233,45 +229,45 @@ class BusinessCard {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'card_name': cardName,
-        'display_full_name': displayFullName,
-        'display_org': displayOrg,
-        'display_title': displayTitle,
-        'display_subtitle': displaySubtitle,
-        'primary_phone': primaryPhone,
-        'primary_email': primaryEmail,
-        'background_color': backgroundColor,
-        'text_color': textColor,
-        'card_photo': cardPhoto,
-        'qr_logo': qrLogo,
-        'contact_json': jsonEncode(contact.toJson()),
-        'qr_appearance_json': jsonEncode(qrAppearance.toJson()),
-        'linked_contact_id': linkedContactId,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+    'id': id,
+    'card_name': cardName,
+    'display_full_name': displayFullName,
+    'display_org': displayOrg,
+    'display_title': displayTitle,
+    'display_subtitle': displaySubtitle,
+    'primary_phone': primaryPhone,
+    'primary_email': primaryEmail,
+    'background_color': backgroundColor,
+    'text_color': textColor,
+    'card_photo': cardPhoto,
+    'qr_logo': qrLogo,
+    'contact_json': jsonEncode(contact.toJson()),
+    'qr_appearance_json': jsonEncode(qrAppearance.toJson()),
+    'linked_contact_id': linkedContactId,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+  };
 
   /// JSON for backup/export. Encodes card_photo and qr_logo as base64.
   Map<String, dynamic> toBackupJson() => {
-        'id': id,
-        'card_name': cardName,
-        'display_full_name': displayFullName,
-        'display_org': displayOrg,
-        'display_title': displayTitle,
-        'display_subtitle': displaySubtitle,
-        'primary_phone': primaryPhone,
-        'primary_email': primaryEmail,
-        'background_color': backgroundColor,
-        'text_color': textColor,
-        if (cardPhoto != null) 'card_photo': base64Encode(cardPhoto!),
-        if (qrLogo != null) 'qr_logo': base64Encode(qrLogo!),
-        'contact_json': jsonEncode(contact.toJson()),
-        'qr_appearance_json': jsonEncode(qrAppearance.toJson()),
-        'linked_contact_id': linkedContactId,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+    'id': id,
+    'card_name': cardName,
+    'display_full_name': displayFullName,
+    'display_org': displayOrg,
+    'display_title': displayTitle,
+    'display_subtitle': displaySubtitle,
+    'primary_phone': primaryPhone,
+    'primary_email': primaryEmail,
+    'background_color': backgroundColor,
+    'text_color': textColor,
+    if (cardPhoto != null) 'card_photo': base64Encode(cardPhoto!),
+    if (qrLogo != null) 'qr_logo': base64Encode(qrLogo!),
+    'contact_json': jsonEncode(contact.toJson()),
+    'qr_appearance_json': jsonEncode(qrAppearance.toJson()),
+    'linked_contact_id': linkedContactId,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+  };
 
   /// Parse from backup JSON. Handles base64 for card_photo and qr_logo.
   /// Tolerates missing/extra fields; validates types to avoid crashes on invalid data.
@@ -326,27 +322,47 @@ class BusinessCard {
     final updatedAt = json['updated_at'];
     final createdAtInt = createdAt is int
         ? createdAt
-        : (createdAt is num ? createdAt.toInt() : DateTime.now().millisecondsSinceEpoch);
+        : (createdAt is num
+              ? createdAt.toInt()
+              : DateTime.now().millisecondsSinceEpoch);
     final updatedAtInt = updatedAt is int
         ? updatedAt
-        : (updatedAt is num ? updatedAt.toInt() : DateTime.now().millisecondsSinceEpoch);
+        : (updatedAt is num
+              ? updatedAt.toInt()
+              : DateTime.now().millisecondsSinceEpoch);
 
     return BusinessCard(
       id: id,
       cardName: json['card_name'] is String ? json['card_name'] as String : '',
-      displayFullName: json['display_full_name'] is String ? json['display_full_name'] as String : '',
-      displayOrg: json['display_org'] is String ? json['display_org'] as String : '',
-      displayTitle: json['display_title'] is String ? json['display_title'] as String : '',
-      displaySubtitle: json['display_subtitle'] is String ? json['display_subtitle'] as String : '',
-      primaryPhone: json['primary_phone'] is String ? json['primary_phone'] as String : '',
-      primaryEmail: json['primary_email'] is String ? json['primary_email'] as String : '',
-      backgroundColor: json['background_color'] is int ? json['background_color'] as int? : null,
+      displayFullName: json['display_full_name'] is String
+          ? json['display_full_name'] as String
+          : '',
+      displayOrg: json['display_org'] is String
+          ? json['display_org'] as String
+          : '',
+      displayTitle: json['display_title'] is String
+          ? json['display_title'] as String
+          : '',
+      displaySubtitle: json['display_subtitle'] is String
+          ? json['display_subtitle'] as String
+          : '',
+      primaryPhone: json['primary_phone'] is String
+          ? json['primary_phone'] as String
+          : '',
+      primaryEmail: json['primary_email'] is String
+          ? json['primary_email'] as String
+          : '',
+      backgroundColor: json['background_color'] is int
+          ? json['background_color'] as int?
+          : null,
       textColor: json['text_color'] is int ? json['text_color'] as int? : null,
       cardPhoto: cardPhoto,
       qrLogo: qrLogo,
       contact: contact,
       qrAppearance: qrAppearance,
-      linkedContactId: json['linked_contact_id'] is String ? json['linked_contact_id'] as String? : null,
+      linkedContactId: json['linked_contact_id'] is String
+          ? json['linked_contact_id'] as String?
+          : null,
       createdAt: createdAtInt,
       updatedAt: updatedAtInt,
     );

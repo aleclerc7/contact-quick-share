@@ -21,6 +21,7 @@ class SimpleQrPayload {
   final QrAppearance qrAppearance;
   final int? backgroundColor;
   final int? textColor;
+
   /// Optional center image when [QrAppearance.centerLogoEnabled] is true
   /// (mirrors business-card QR; default style in Settings has no logo bytes).
   final Uint8List? centerLogo;

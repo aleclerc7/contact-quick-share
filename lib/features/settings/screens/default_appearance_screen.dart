@@ -32,9 +32,7 @@ class DefaultAppearanceScreen extends ConsumerWidget {
     final asyncSettings = ref.watch(settingsNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.defaultQrCodeStyle),
-      ),
+      appBar: AppBar(title: Text(loc.defaultQrCodeStyle)),
       body: SafeArea(
         top: false,
         child: asyncSettings.when(
@@ -44,7 +42,9 @@ class DefaultAppearanceScreen extends ConsumerWidget {
             return AppearanceEditorWidget(
               config: _settingsToConfig(settings),
               onChanged: (config) async {
-                await ref.read(settingsNotifierProvider.notifier).updateSettings(
+                await ref
+                    .read(settingsNotifierProvider.notifier)
+                    .updateSettings(
                       settings.copyWith(
                         defaultBackgroundColor: config.backgroundColor,
                         defaultTextColor: config.textColor,

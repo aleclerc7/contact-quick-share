@@ -29,9 +29,18 @@ void main() {
       final source = Contact(
         displayName: 'Test',
         emails: [
-          Email(address: '  John@Example.com  ', label: const Label(EmailLabel.home)),
-          Email(address: 'john@example.com', label: const Label(EmailLabel.work)),
-          Email(address: 'jane@example.com', label: const Label(EmailLabel.other)),
+          Email(
+            address: '  John@Example.com  ',
+            label: const Label(EmailLabel.home),
+          ),
+          Email(
+            address: 'john@example.com',
+            label: const Label(EmailLabel.work),
+          ),
+          Email(
+            address: 'jane@example.com',
+            label: const Label(EmailLabel.other),
+          ),
         ],
       );
 
@@ -46,9 +55,18 @@ void main() {
       final source = Contact(
         displayName: 'Test',
         websites: [
-          Website(url: 'https://example.com', label: const Label(WebsiteLabel.homepage)),
-          Website(url: 'https://example.org', label: const Label(WebsiteLabel.homepage)),
-          Website(url: 'https://example.com', label: const Label(WebsiteLabel.homepage)),
+          Website(
+            url: 'https://example.com',
+            label: const Label(WebsiteLabel.homepage),
+          ),
+          Website(
+            url: 'https://example.org',
+            label: const Label(WebsiteLabel.homepage),
+          ),
+          Website(
+            url: 'https://example.com',
+            label: const Label(WebsiteLabel.homepage),
+          ),
         ],
         notes: [
           Note(note: 'Hello world'),
